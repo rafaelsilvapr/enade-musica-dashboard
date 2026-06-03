@@ -117,15 +117,40 @@
       background: #fff;
       box-shadow: 0 1px 3px rgba(40,104,169,.08);
     }
+    .tl-card-bach_lic {
+      border-color: #7d3c98;
+      border-style: dashed;
+      background: #faf5ff;
+    }
+    .tl-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      margin-bottom: 6px;
+      flex-wrap: wrap;
+    }
     .tl-year-badge {
       display: inline-block;
-      margin-bottom: 6px;
       padding: 3px 10px;
       border-radius: 999px;
       background: var(--accent);
       color: #fff;
       font-weight: 700;
       font-size: 13px;
+    }
+    .tl-card-bach_lic .tl-year-badge {
+      background: #7d3c98;
+    }
+    .tl-grau-badge {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 4px;
+      color: #fff;
+      font-weight: 700;
+      font-size: 10px;
+      letter-spacing: .3px;
+      cursor: help;
     }
     .tl-card strong {
       display: block;
@@ -685,9 +710,13 @@
       <details class="collapsible" open>
         <summary><h2 style="margin:0;font-size:16px">Linha do tempo: provas e marcos legais</h2></summary>
         <div class="timeline-intro">
-          <strong>Como ler:</strong> Os boxes azuis sao os ciclos de prova — mostram mudancas estruturais no instrumento (formato, numero de questoes, tipo de raciocinio). Abaixo da linha, os marcadores indicam leis, diretrizes e portarias que moldaram cada mudanca. A cadeia e rastreavel: Lei 10.639 &rarr; Lei 11.645 &rarr; BNCC &rarr; BNC-Formacao &rarr; Portaria 329.
+          <strong>Como ler:</strong> Os boxes sao os ciclos de prova. <span style="display:inline-block;padding:1px 6px;background:var(--accent);color:#fff;border-radius:3px;font-size:10px;font-weight:700">Licenciatura</span> indica prova aplicada so a alunos de licenciatura. <span style="display:inline-block;padding:1px 6px;background:#7d3c98;color:#fff;border-radius:3px;font-size:10px;font-weight:700">Bach. + Lic.</span> indica prova unica para os dois graus (caso de 2006 e 2009, quando a area era "Musica" sem separacao). Abaixo da linha, os marcadores indicam leis e portarias que moldaram cada mudanca: Lei 10.639 &rarr; Lei 11.645 &rarr; BNCC &rarr; BNC-Formacao &rarr; Portaria 329.
         </div>
         <div class="tl-legend">
+          <span><strong>Grau:</strong></span>
+          <span><span class="tl-legend-swatch" style="background:var(--accent)"></span> Licenciatura</span>
+          <span><span class="tl-legend-swatch" style="background:#7d3c98"></span> Bacharelado + Licenciatura</span>
+          <span style="margin-left:18px"><strong>Legislacao:</strong></span>
           <span><span class="tl-legend-swatch" style="background:#c0392b"></span> Lei</span>
           <span><span class="tl-legend-swatch" style="background:#2874a6"></span> DCN / LDB</span>
           <span><span class="tl-legend-swatch" style="background:#1e8449"></span> BNCC</span>
@@ -696,14 +725,14 @@
         </div>
         <div class="timeline-shell">
           <div role="list" aria-label="Ciclos de prova do Enade Musica">
-            <div class="tl-provas-row"><div class="tl-card" role="listitem"><div class="tl-year-badge">2006</div><strong>Inicio da serie</strong><span>Caderno unico, gabarito, padrao de resposta. 25 questoes especificas. Formato legado de bloco fechado.</span></div>
-<div class="tl-card" role="listitem"><div class="tl-year-badge">2009</div><strong>Mesmo formato</strong><span>Caderno unico. 25 questoes especificas (+ anuladas). Estrutura identica a 2006.</span></div>
-<div class="tl-card" role="listitem"><div class="tl-year-badge">2011</div><strong>Primeira inflexao</strong><span>Primeira prova apos a Lei 11.769. Questoes de legislacao aparecem pela primeira vez no componente especifico.</span></div>
-<div class="tl-card" role="listitem"><div class="tl-year-badge">2014</div><strong>Formato legado mantido</strong><span>22 questoes especificas. Caderno unico. Primeiro ano com dado de desempenho por IES comparavel.</span></div>
-<div class="tl-card" role="listitem"><div class="tl-year-badge">2017</div><strong>Estabilizacao</strong><span>22 questoes (q9-q30). Caderno unico por area. Demanda dominante: analisar. Formato PORQUE presente (23%).</span></div>
-<div class="tl-card" role="listitem"><div class="tl-year-badge">2021</div><strong>Ultimo ciclo legado</strong><span>22 questoes (q9-q30). Quase identico a 2017. Formato PORQUE cai para 9%. Melhor referencia do regime antigo.</span></div>
-<div class="tl-card" role="listitem"><div class="tl-year-badge">2024</div><strong>Novo formato</strong><span>36 questoes (q28-q63). BIB + multiplos cadernos. Formacao Geral Docente substitui a FG generica. Formato aplicar domina.</span></div>
-<div class="tl-card" role="listitem"><div class="tl-year-badge">2025</div><strong>Ruptura estrutural</strong><span>50 questoes (q31-q80). PND + avaliacao da pratica. 18 objetos oficiais. Formato PORQUE desaparece. Metrica: % acima do basico.</span></div></div>
+            <div class="tl-provas-row"><div class="tl-card tl-card-bach_lic" role="listitem"><div class="tl-card-header"><div class="tl-year-badge">2006</div><div class="tl-grau-badge" style="background:#7d3c98" title="Prova aplicada a bacharelado E licenciatura — area unica MUSICA, sem separacao de grau">Bach. + Lic.</div></div><strong>Inicio da serie</strong><span>Caderno unico, gabarito, padrao de resposta. 25 questoes especificas. Formato legado de bloco fechado.</span></div>
+<div class="tl-card tl-card-bach_lic" role="listitem"><div class="tl-card-header"><div class="tl-year-badge">2009</div><div class="tl-grau-badge" style="background:#7d3c98" title="Prova aplicada a bacharelado E licenciatura — area unica MUSICA, sem separacao de grau">Bach. + Lic.</div></div><strong>Mesmo formato</strong><span>Caderno unico. 25 questoes especificas (+ anuladas). Estrutura identica a 2006.</span></div>
+<div class="tl-card tl-card-lic" role="listitem"><div class="tl-card-header"><div class="tl-year-badge">2011</div><div class="tl-grau-badge" style="background:#1e8449" title="Prova aplicada apenas a alunos de licenciatura em Musica">Licenciatura</div></div><strong>Primeira inflexao</strong><span>Primeira prova so de Licenciatura. Tambem o primeiro ciclo apos a Lei 11.769 — questoes de legislacao aparecem pela primeira vez.</span></div>
+<div class="tl-card tl-card-lic" role="listitem"><div class="tl-card-header"><div class="tl-year-badge">2014</div><div class="tl-grau-badge" style="background:#1e8449" title="Prova aplicada apenas a alunos de licenciatura em Musica">Licenciatura</div></div><strong>Formato legado mantido</strong><span>22 questoes especificas. Caderno unico. Primeiro ano com dado de desempenho por IES comparavel.</span></div>
+<div class="tl-card tl-card-lic" role="listitem"><div class="tl-card-header"><div class="tl-year-badge">2017</div><div class="tl-grau-badge" style="background:#1e8449" title="Prova aplicada apenas a alunos de licenciatura em Musica">Licenciatura</div></div><strong>Estabilizacao</strong><span>22 questoes (q9-q30). Caderno unico por area. Demanda dominante: analisar. Formato PORQUE presente (23%).</span></div>
+<div class="tl-card tl-card-lic" role="listitem"><div class="tl-card-header"><div class="tl-year-badge">2021</div><div class="tl-grau-badge" style="background:#1e8449" title="Prova aplicada apenas a alunos de licenciatura em Musica">Licenciatura</div></div><strong>Ultimo ciclo legado</strong><span>22 questoes (q9-q30). Quase identico a 2017. Formato PORQUE cai para 9%. Melhor referencia do regime antigo.</span></div>
+<div class="tl-card tl-card-lic" role="listitem"><div class="tl-card-header"><div class="tl-year-badge">2024</div><div class="tl-grau-badge" style="background:#1e8449" title="Prova aplicada apenas a alunos de licenciatura em Musica">Licenciatura</div></div><strong>Novo formato</strong><span>36 questoes (q28-q63). BIB + multiplos cadernos. Formacao Geral Docente substitui a FG generica. Formato aplicar domina.</span></div>
+<div class="tl-card tl-card-lic" role="listitem"><div class="tl-card-header"><div class="tl-year-badge">2025</div><div class="tl-grau-badge" style="background:#1e8449" title="Prova aplicada apenas a alunos de licenciatura em Musica">Licenciatura</div></div><strong>Ruptura estrutural</strong><span>50 questoes (q31-q80). PND + avaliacao da pratica. 18 objetos oficiais. Formato PORQUE desaparece. Metrica: % acima do basico.</span></div></div>
             <div class="tl-axis" aria-hidden="true"></div>
             <div class="tl-leis-row" role="list" aria-label="Marcos legais"><div class="tl-marker" role="listitem"><div class="tl-marker-stem" style="background:#2874a6"></div><div class="tl-marker-label"><span class="tl-tag" style="background:#2874a6">LDB</span><strong>1996</strong><em>LDB (Lei 9.394/1996)</em><span>Lei de Diretrizes e Bases da Educacao Nacional. Define a estrutura do sistema educacional e a formacao docente.</span></div></div>
 <div class="tl-marker" role="listitem"><div class="tl-marker-stem" style="background:#c0392b"></div><div class="tl-marker-label"><span class="tl-tag" style="background:#c0392b">LEI</span><strong>2003</strong><em>Lei 10.639/2003</em><span>Obriga o ensino de Historia e Cultura Afro-Brasileira no curriculo. Primeiro marco legal da diversidade que impactara a prova.</span></div></div>
