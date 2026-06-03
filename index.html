@@ -1,0 +1,1243 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Evolucao IES Musica Licenciatura</title>
+  <style>
+    :root {
+      --ink: #17202a;
+      --muted: #4a5568;
+      --line: #d9dee7;
+      --paper: #f7f8fa;
+      --panel: #ffffff;
+      --top: #1f8a70;
+      --high: #77b255;
+      --mid: #e0b84f;
+      --low: #d97844;
+      --base: #b94e48;
+      --accent: #2868a9;
+      --accent2: #7b5ea7;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font: 14px/1.45 -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+    header {
+      padding: 22px 24px 16px;
+      background: #fff;
+      border-bottom: 1px solid var(--line);
+    }
+    h1 {
+      margin: 0 0 6px;
+      font-size: 24px;
+      line-height: 1.15;
+      letter-spacing: 0;
+    }
+    .sub {
+      max-width: 1120px;
+      color: var(--muted);
+    }
+    main { padding: 18px 24px 30px; }
+    .toolbar {
+      display: grid;
+      grid-template-columns: minmax(220px, 1fr) repeat(4, max-content);
+      gap: 10px;
+      align-items: end;
+      margin-bottom: 16px;
+    }
+    label { display: grid; gap: 5px; color: var(--muted); font-size: 12px; }
+    input, select, button {
+      min-height: 34px;
+      border: 1px solid var(--line);
+      background: #fff;
+      color: var(--ink);
+      border-radius: 6px;
+      padding: 7px 9px;
+      font: inherit;
+    }
+    button { cursor: pointer; }
+    button.active {
+      border-color: var(--accent);
+      color: #fff;
+      background: var(--accent);
+    }
+    .explain-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(150px, 1fr));
+      gap: 1px;
+      background: var(--line);
+      border-top: 1px solid var(--line);
+    }
+    /* --- Timeline --- */
+    .timeline-shell {
+      padding: 14px;
+      overflow-x: auto;
+    }
+    .timeline-intro {
+      padding: 8px 14px;
+      color: var(--muted);
+      font-size: 12px;
+      border-bottom: 1px solid var(--line);
+      background: #fafbfc;
+    }
+    .tl-legend {
+      display: flex;
+      gap: 14px;
+      padding: 8px 14px;
+      font-size: 12px;
+      color: var(--muted);
+      border-bottom: 1px solid var(--line);
+      background: #fafbfc;
+      flex-wrap: wrap;
+    }
+    .tl-legend-swatch {
+      display: inline-block;
+      width: 12px;
+      height: 12px;
+      border-radius: 3px;
+      margin-right: 4px;
+      vertical-align: middle;
+    }
+    /* Prova cards row */
+    .tl-provas-row {
+      display: grid;
+      grid-template-columns: repeat(8, minmax(155px, 1fr));
+      gap: 8px;
+      min-width: 1300px;
+      padding: 0 0 12px;
+    }
+    .tl-card {
+      padding: 10px;
+      border: 1.5px solid var(--accent);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 1px 3px rgba(40,104,169,.08);
+    }
+    .tl-year-badge {
+      display: inline-block;
+      margin-bottom: 6px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .tl-card strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 13px;
+      line-height: 1.3;
+      color: var(--ink);
+    }
+    .tl-card span {
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+    /* Horizontal rule between provas and leis */
+    .tl-axis {
+      position: relative;
+      height: 3px;
+      background: linear-gradient(90deg, #cfd6df, #9bb9d8, #cfd6df);
+      margin: 0 0 0;
+      min-width: 1300px;
+    }
+    /* Lei markers row */
+    .tl-leis-row {
+      display: grid;
+      grid-template-columns: repeat(12, minmax(120px, 1fr));
+      gap: 0;
+      min-width: 1300px;
+      padding: 0;
+    }
+    .tl-marker {
+      position: relative;
+      padding: 0 4px;
+    }
+    .tl-marker-stem {
+      width: 2px;
+      height: 18px;
+      margin: 0 auto;
+    }
+    .tl-marker-label {
+      padding: 6px 6px 8px;
+      text-align: center;
+    }
+    .tl-marker-label strong {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+    .tl-marker-label em {
+      display: block;
+      font-style: normal;
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--ink);
+      line-height: 1.3;
+      margin-bottom: 3px;
+    }
+    .tl-marker-label span {
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.3;
+    }
+    .tl-tag {
+      display: inline-block;
+      padding: 2px 6px;
+      border-radius: 4px;
+      color: #fff;
+      font-weight: 700;
+      font-size: 9px;
+      letter-spacing: .3px;
+      margin-bottom: 3px;
+    }
+    /* --- Gauthier chart --- */
+    .gauthier-wrap {
+      padding: 14px;
+    }
+    .gauthier-chart {
+      display: grid;
+      grid-template-columns: 52px 1fr 80px;
+      gap: 6px 10px;
+      align-items: center;
+    }
+    .gauthier-year {
+      font-weight: 700;
+      font-size: 14px;
+      text-align: right;
+      color: var(--ink);
+    }
+    .gauthier-bar {
+      display: flex;
+      height: 32px;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,.06);
+      position: relative;
+    }
+    .gauthier-seg {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: #fff;
+      min-width: 0;
+      overflow: hidden;
+      transition: width .3s;
+    }
+    .gauthier-seg .pct-label {
+      opacity: .95;
+    }
+    .gauthier-n {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .gauthier-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      padding: 12px 14px 8px;
+      border-top: 1px solid var(--line);
+      background: #fafbfc;
+    }
+    .gauthier-legend-item {
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .gauthier-legend-item strong {
+      color: var(--ink);
+      font-size: 12px;
+    }
+    .gauthier-legend-swatch {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border-radius: 4px;
+      margin-right: 5px;
+      vertical-align: middle;
+      border: 1px solid rgba(0,0,0,.08);
+    }
+    .explain-item {
+      background: #fff;
+      padding: 12px;
+      min-height: 96px;
+    }
+    .explain-item strong {
+      display: block;
+      margin-bottom: 5px;
+      font-size: 13px;
+    }
+    .explain-item span {
+      color: var(--muted);
+      font-size: 12px;
+    }
+    section {
+      background: #fff;
+      border: 1px solid var(--line);
+      margin-bottom: 18px;
+    }
+    .section-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: baseline;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+    h2 { margin: 0; font-size: 16px; letter-spacing: 0; }
+    .note { color: var(--muted); font-size: 12px; }
+    .note strong { color: var(--ink); }
+    .movement-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(220px, 1fr));
+      gap: 14px;
+      padding: 14px;
+    }
+    .band-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(190px, 1fr));
+      gap: 1px;
+      background: var(--line);
+      border-top: 1px solid var(--line);
+    }
+    .band-card {
+      background: #fff;
+      padding: 12px;
+      min-height: 124px;
+    }
+    .band-swatch {
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+      border: 1px solid rgba(0, 0, 0, .08);
+    }
+    .band-card strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 13px;
+    }
+    .band-card .small {
+      display: block;
+      margin-top: 6px;
+    }
+    .source-note {
+      padding: 12px 14px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+      background: #fafbfc;
+    }
+    .source-note strong { color: var(--ink); }
+    .movement h3 { margin: 0 0 8px; font-size: 14px; }
+    .bar {
+      height: 26px;
+      display: flex;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #f3f5f7;
+    }
+    .seg { height: 100%; min-width: 0; }
+    .seg.up { background: var(--top); }
+    .seg.stable { background: var(--mid); }
+    .seg.down { background: var(--base); }
+    .legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .dot { display: inline-block; width: 9px; height: 9px; border-radius: 99px; margin-right: 4px; }
+    .viz {
+      overflow: auto;
+      max-height: 690px;
+    }
+    table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      min-width: 1060px;
+    }
+    th, td {
+      border-bottom: 1px solid var(--line);
+      padding: 7px 8px;
+      text-align: left;
+      vertical-align: middle;
+      white-space: nowrap;
+    }
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 2;
+      background: #f3f5f7;
+      font-size: 12px;
+      color: #364354;
+    }
+    td.name {
+      position: sticky;
+      left: 0;
+      z-index: 1;
+      background: #fff;
+      min-width: 300px;
+      max-width: 420px;
+      white-space: normal;
+    }
+    th.name-head {
+      left: 0;
+      z-index: 3;
+      min-width: 300px;
+    }
+    .small { color: var(--muted); font-size: 12px; }
+    .cell {
+      border-radius: 4px;
+      min-width: 126px;
+      padding: 6px;
+      border: 1px solid rgba(0,0,0,.08);
+    }
+    .cell strong { display: block; font-size: 13px; }
+    .cell span { display: block; }
+    .spark svg { display: block; width: 150px; height: 38px; }
+    .delta { font-weight: 700; }
+    .delta.up { color: var(--top); }
+    .delta.stable { color: #8a6b13; }
+    .delta.down { color: var(--base); }
+    .bump-wrap { overflow: auto; padding: 10px 14px 18px; }
+    #bumpChart { min-width: 980px; width: 100%; height: 420px; }
+    .bump-controls {
+      border-top: 1px solid var(--line);
+      padding: 12px 14px 14px;
+      background: #fafbfc;
+    }
+    .bump-control-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .control-stack {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 10px;
+      flex: 1 1 auto;
+    }
+    .inline-search {
+      min-width: 220px;
+      max-width: 360px;
+      width: 100%;
+    }
+    .bump-choices {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      max-height: 164px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+    .bump-chip {
+      min-height: 30px;
+      max-width: 240px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      border-color: #cfd5df;
+      background: #fff;
+      font-size: 12px;
+    }
+    .bump-chip.selected {
+      color: #fff;
+      border-color: var(--accent);
+      background: var(--accent);
+    }
+    .bump-chip .chip-sub {
+      opacity: .78;
+      margin-left: 4px;
+    }
+    .mini-button {
+      min-height: 28px;
+      padding: 5px 8px;
+      font-size: 12px;
+    }
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(220px, 1fr));
+      gap: 14px;
+      padding: 14px;
+    }
+    .flow table { min-width: 0; font-size: 12px; }
+    .flow th, .flow td { padding: 5px 6px; }
+    .search-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+      padding: 12px 14px;
+      border-top: 1px solid var(--line);
+      background: #fafbfc;
+    }
+    .pin-tray {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      padding: 0 14px 12px;
+      background: #fafbfc;
+    }
+    .pin-chip {
+      min-height: 28px;
+      padding: 5px 8px;
+      border: 1px solid #cfd5df;
+      background: #fff;
+      border-radius: 999px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+    .pin-chip strong {
+      font-weight: 600;
+    }
+    .pin-button {
+      min-height: 24px;
+      padding: 3px 7px;
+      font-size: 11px;
+      border-radius: 999px;
+      border: 1px solid #cfd5df;
+      background: #fff;
+      margin-top: 4px;
+    }
+    .pin-button.active {
+      color: #fff;
+      border-color: var(--accent2);
+      background: var(--accent2);
+    }
+    .table-note {
+      padding: 10px 14px 13px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 12px;
+      background: #fafbfc;
+    }
+    .table-note strong { color: var(--ink); }
+    details.collapsible > summary {
+      cursor: pointer;
+      list-style: none;
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    details.collapsible > summary::-webkit-details-marker { display: none; }
+    details.collapsible > summary::after {
+      content: "\25B6";
+      font-size: 11px;
+      color: var(--muted);
+      transition: transform .2s;
+    }
+    details.collapsible[open] > summary::after {
+      transform: rotate(90deg);
+    }
+    footer {
+      color: var(--muted);
+      font-size: 12px;
+      padding: 0 24px 22px;
+    }
+    @media (max-width: 880px) {
+      main, header, footer { padding-left: 12px; padding-right: 12px; }
+      .toolbar { grid-template-columns: 1fr 1fr; }
+      .metrics, .explain-grid, .movement-grid, .band-grid, .flow { grid-template-columns: 1fr; }
+      .tl-provas-row {
+        grid-template-columns: 1fr;
+        min-width: 0;
+      }
+      .tl-axis { min-width: 0; }
+      .tl-leis-row {
+        grid-template-columns: 1fr 1fr;
+        min-width: 0;
+      }
+      .tl-marker-stem { height: 10px; }
+      .gauthier-chart {
+        grid-template-columns: 40px 1fr 50px;
+      }
+      table { min-width: 920px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Evolucao visual dos cursos de Musica Licenciatura no Enade</h1>
+    <div class="sub">O painel mostra como cada IES se moveu dentro do conjunto nacional de cursos avaliados. A cor indica posicao relativa no ano: verde fica mais perto do topo; vermelho fica mais perto da base.</div>
+  </header>
+  <main>
+    <div class="toolbar" aria-label="Filtros">
+      <label>Buscar IES ou sigla
+        <input id="search" type="search" placeholder="Ex.: UNIPAMPA, USP, UFRJ">
+      </label>
+      <label>Recorte
+        <select id="preset">
+          <option value="main">Principais</option>
+          <option value="all" selected>Todas</option>
+          <option value="complete">Serie com 3+ anos</option>
+          <option value="top">Apareceu no top 20</option>
+          <option value="unipampa">Unipampa + comparaveis</option>
+        </select>
+      </label>
+      <label>Movimento
+        <select id="movement">
+          <option value="all">Todos</option>
+          <option value="subiu">Subiu</option>
+          <option value="estavel">Estavel</option>
+          <option value="desceu">Desceu</option>
+          <option value="sem serie">Sem serie</option>
+        </select>
+      </label>
+      <label>Min. anos
+        <select id="minYears">
+          <option value="1" selected>1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+        </select>
+      </label>
+      <button id="reset">Limpar</button>
+    </div>
+    <div class="note" id="filterSummary"></div>
+
+    <section>
+      <details class="collapsible" open>
+        <summary><h2 style="margin:0;font-size:16px">Linha do tempo: provas e marcos legais</h2></summary>
+        <div class="timeline-intro">
+          <strong>Como ler:</strong> Os boxes azuis sao os ciclos de prova — mostram mudancas estruturais no instrumento (formato, numero de questoes, tipo de raciocinio). Abaixo da linha, os marcadores indicam leis, diretrizes e portarias que moldaram cada mudanca. A cadeia e rastreavel: Lei 10.639 &rarr; Lei 11.645 &rarr; BNCC &rarr; BNC-Formacao &rarr; Portaria 329.
+        </div>
+        <div class="tl-legend">
+          <span><span class="tl-legend-swatch" style="background:#c0392b"></span> Lei</span>
+          <span><span class="tl-legend-swatch" style="background:#2874a6"></span> DCN / LDB</span>
+          <span><span class="tl-legend-swatch" style="background:#1e8449"></span> BNCC</span>
+          <span><span class="tl-legend-swatch" style="background:#7d3c98"></span> BNC-Formacao</span>
+          <span><span class="tl-legend-swatch" style="background:#d68910"></span> Portaria / Enade</span>
+        </div>
+        <div class="timeline-shell">
+          <div role="list" aria-label="Ciclos de prova do Enade Musica">
+            <div class="tl-provas-row"><div class="tl-card" role="listitem"><div class="tl-year-badge">2006</div><strong>Inicio da serie</strong><span>Caderno unico, gabarito, padrao de resposta. 25 questoes especificas. Formato legado de bloco fechado.</span></div>
+<div class="tl-card" role="listitem"><div class="tl-year-badge">2009</div><strong>Mesmo formato</strong><span>Caderno unico. 25 questoes especificas (+ anuladas). Estrutura identica a 2006.</span></div>
+<div class="tl-card" role="listitem"><div class="tl-year-badge">2011</div><strong>Primeira inflexao</strong><span>Primeira prova apos a Lei 11.769. Questoes de legislacao aparecem pela primeira vez no componente especifico.</span></div>
+<div class="tl-card" role="listitem"><div class="tl-year-badge">2014</div><strong>Formato legado mantido</strong><span>22 questoes especificas. Caderno unico. Primeiro ano com dado de desempenho por IES comparavel.</span></div>
+<div class="tl-card" role="listitem"><div class="tl-year-badge">2017</div><strong>Estabilizacao</strong><span>22 questoes (q9-q30). Caderno unico por area. Demanda dominante: analisar. Formato PORQUE presente (23%).</span></div>
+<div class="tl-card" role="listitem"><div class="tl-year-badge">2021</div><strong>Ultimo ciclo legado</strong><span>22 questoes (q9-q30). Quase identico a 2017. Formato PORQUE cai para 9%. Melhor referencia do regime antigo.</span></div>
+<div class="tl-card" role="listitem"><div class="tl-year-badge">2024</div><strong>Novo formato</strong><span>36 questoes (q28-q63). BIB + multiplos cadernos. Formacao Geral Docente substitui a FG generica. Formato aplicar domina.</span></div>
+<div class="tl-card" role="listitem"><div class="tl-year-badge">2025</div><strong>Ruptura estrutural</strong><span>50 questoes (q31-q80). PND + avaliacao da pratica. 18 objetos oficiais. Formato PORQUE desaparece. Metrica: % acima do basico.</span></div></div>
+            <div class="tl-axis" aria-hidden="true"></div>
+            <div class="tl-leis-row" role="list" aria-label="Marcos legais"><div class="tl-marker" role="listitem"><div class="tl-marker-stem" style="background:#2874a6"></div><div class="tl-marker-label"><span class="tl-tag" style="background:#2874a6">LDB</span><strong>1996</strong><em>LDB (Lei 9.394/1996)</em><span>Lei de Diretrizes e Bases da Educacao Nacional. Define a estrutura do sistema educacional e a formacao docente.</span></div></div>
+<div class="tl-marker" role="listitem"><div class="tl-marker-stem" style="background:#c0392b"></div><div class="tl-marker-label"><span class="tl-tag" style="background:#c0392b">LEI</span><strong>2003</strong><em>Lei 10.639/2003</em><span>Obriga o ensino de Historia e Cultura Afro-Brasileira no curriculo. Primeiro marco legal da diversidade que impactara a prova.</span></div></div>
+<div class="tl-marker" role="listitem"><div class="tl-marker-stem" style="background:#2874a6"></div><div class="tl-marker-label"><span class="tl-tag" style="background:#2874a6">DCN</span><strong>2004</strong><em>DCN Musica (Res. CNE/CES 2/2004)</em><span>Diretrizes Curriculares de Musica. NAO menciona diversidade — foco em formacao tecnico-musical e pedagogica classica.</span></div></div>
+<div class="tl-marker" role="listitem"><div class="tl-marker-stem" style="background:#c0392b"></div><div class="tl-marker-label"><span class="tl-tag" style="background:#c0392b">LEI</span><strong>2008</strong><em>Lei 11.645/2008</em><span>Estende a Lei 10.639 aos povos indigenas. Nomeia a educacao artistica como veiculo para culturas afro-brasileiras e indigenas.</span></div></div>
+<div class="tl-marker" role="listitem"><div class="tl-marker-stem" style="background:#c0392b"></div><div class="tl-marker-label"><span class="tl-tag" style="background:#c0392b">LEI</span><strong>2008</strong><em>Lei 11.769/2008</em><span>Torna a musica conteudo obrigatorio na educacao basica. Gera demanda por licenciados em musica e muda o perfil da prova a partir de 2011.</span></div></div>
+<div class="tl-marker" role="listitem"><div class="tl-marker-stem" style="background:#2874a6"></div><div class="tl-marker-label"><span class="tl-tag" style="background:#2874a6">DCN</span><strong>2015</strong><em>DCN Formacao (Res. CNE/CP 2/2015)</em><span>Diretrizes de formacao de professores. Primeira DCN a vincular a formacao docente a competencias profissionais sistematizadas.</span></div></div>
+<div class="tl-marker" role="listitem"><div class="tl-marker-stem" style="background:#c0392b"></div><div class="tl-marker-label"><span class="tl-tag" style="background:#c0392b">LEI</span><strong>2016</strong><em>Lei 13.278/2016</em><span>Altera a LDB: artes visuais, danca, musica e teatro passam a ser componentes curriculares obrigatorios da educacao basica.</span></div></div>
+<div class="tl-marker" role="listitem"><div class="tl-marker-stem" style="background:#1e8449"></div><div class="tl-marker-label"><span class="tl-tag" style="background:#1e8449">BNCC</span><strong>2017</strong><em>BNCC (2017/2018)</em><span>Base Nacional Comum Curricular. Transforma diversidade em competencia do aluno. Define o que se ensina — e, por consequencia, o que o professor precisa saber.</span></div></div>
+<div class="tl-marker" role="listitem"><div class="tl-marker-stem" style="background:#7d3c98"></div><div class="tl-marker-label"><span class="tl-tag" style="background:#7d3c98">BNC-F</span><strong>2019</strong><em>BNC-Formacao (Res. CNE/CP 2/2019)</em><span>Reorienta a formacao de professores para ensinar a BNCC. Exige do professor valorizacao da diversidade como atitude profissional. Marco-chave da ruptura 2024-2025.</span></div></div>
+<div class="tl-marker" role="listitem"><div class="tl-marker-stem" style="background:#7d3c98"></div><div class="tl-marker-label"><span class="tl-tag" style="background:#7d3c98">BNC-F</span><strong>2020</strong><em>BNC-Formacao Continuada (Res. CNE/CP 1/2020)</em><span>Estende a logica de competencias da BNC-Formacao para a formacao continuada. Reforça o alinhamento BNCC → formacao → avaliacao.</span></div></div>
+<div class="tl-marker" role="listitem"><div class="tl-marker-stem" style="background:#d68910"></div><div class="tl-marker-label"><span class="tl-tag" style="background:#d68910">ENADE</span><strong>2024</strong><em>Enade das Licenciaturas</em><span>Novo formato com Formacao Geral Docente (nao mais generica), BIB e cadernos multiplos. Primeira prova desenhada sob a BNC-Formacao.</span></div></div>
+<div class="tl-marker" role="listitem"><div class="tl-marker-stem" style="background:#d68910"></div><div class="tl-marker-label"><span class="tl-tag" style="background:#d68910">PORT</span><strong>2025</strong><em>Portaria 329/2025</em><span>Define 18 objetos de avaliacao para Musica. 8 de 18 (44%) sobre diversidade, inclusao, interculturalidade. Traduz a BNC-Formacao em matriz de prova.</span></div></div></div>
+          </div>
+        </div>
+        <div class="source-note">
+          <strong>Cadeia documental:</strong> Lei 10.639/2003 (diversidade como conteudo) &rarr; Lei 11.645/2008 (estende a indigenas) &rarr; Lei 11.769/2008 (musica obrigatoria) &rarr; BNCC 2017 (diversidade como competencia) &rarr; BNC-Formacao 2019 (diversidade como disposicao do professor) &rarr; Portaria 329/2025 (diversidade como 44% dos objetos de avaliacao).
+        </div>
+      </details>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <h2>Perfil de saberes por ciclo (Gauthier)</h2>
+        <div class="note">Classificacao das questoes especificas de Musica segundo a tipologia de Gauthier.</div>
+      </div>
+      <div class="gauthier-wrap">
+        <div class="gauthier-chart" id="gauthierChart" role="img" aria-label="Grafico de barras empilhadas mostrando a distribuicao dos saberes de Gauthier por ano"></div>
+      </div>
+      <div class="gauthier-legend" id="gauthierLegend"></div>
+      <div class="source-note">
+        <strong>Como ler:</strong> Cada barra mostra 100% das questoes efetivas daquele ciclo. A proporcao de cada cor indica quanto da prova exige cada tipo de saber docente. Note a inversao entre 2021 (59% disciplinar) e 2024 (53% acao pedagogica).
+      </div>
+    </section>
+
+    <section>
+      <div class=”section-head”>
+        <h2>Bump chart dos principais cursos</h2>
+        <div class=”note”>Quanto mais alto, melhor a posicao relativa no ano. Media e mediana ficam como referencia. IES com apenas um ciclo aparecem como ponto isolado.</div>
+      </div>
+      <div class=”bump-wrap”>
+        <svg id=”bumpChart” viewBox=”0 0 980 420” role=”img” aria-labelledby=”bumpTitle bumpDesc”><title id=”bumpTitle”>Evolucao relativa dos principais cursos</title><desc id=”bumpDesc”>Grafico de linhas mostrando a trajetoria de posicao relativa de cada IES selecionada nos ciclos 2014, 2017, 2021 e 2025. Linhas de media e mediana nacional servem como referencia.</desc></svg>
+      </div>
+      <div class=”bump-controls”>
+        <div class=”bump-control-head”>
+          <div class=”control-stack”>
+            <div class=”note” id=”bumpSelectionCount”></div>
+            <input class=”inline-search” id=”bumpSearch” type=”search” placeholder=”Buscar universidade no gráfico: USP, UFRJ, UF...”>
+          </div>
+          <button class=”mini-button” id=”clearBump” type=”button”>Limpar seleção</button>
+        </div>
+        <div class=”bump-choices” id=”bumpChoices” aria-label=”Selecionar universidades no bump chart”></div>
+      </div>
+    </section>
+
+    <section>
+      <div class=”section-head”>
+        <h2>Tabela heatmap por IES</h2>
+        <div class=”note” id=”rowCount”></div>
+      </div>
+      <details class=”collapsible” style=”border-bottom:1px solid var(--line)”>
+        <summary><span style=”font-size:13px;font-weight:600”>Como ler esta tabela</span></summary>
+        <div class=”explain-grid”>
+          <div class=”explain-item”><strong>Posicao no ano (R)</strong><span>R quer dizer ranking. “3º de 88” significa que a IES ficou na 3ª posicao entre 88 IES com resultado naquele ciclo.</span></div>
+          <div class=”explain-item”><strong>Posicao relativa (PCT)</strong><span>Aqui significa: 100% = topo do ano; 50% = meio; 0% = base. Use para comparar entre anos.</span></div>
+          <div class=”explain-item”><strong>Valor</strong><span>Em 2014, 2017 e 2021 e conceito Enade continuo. Em 2025 e percentual acima do basico.</span></div>
+          <div class=”explain-item”><strong>Participantes (n)</strong><span>Numero de estudantes participantes daquela IES no ciclo.</span></div>
+          <div class=”explain-item”><strong>Media e mediana</strong><span>Linhas de referencia do conjunto nacional no bump chart. A mediana mostra o centro sem ser puxada por extremos.</span></div>
+        </div>
+      </details>
+      <div class=”source-note”>
+        <strong>Criterio das cores:</strong> as cores nao sao faixas oficiais do Inep. Elas indicam a posicao relativa dentro do ano: verde = topo, amarelo = meio-baixo, vermelho = base.
+      </div>
+      <div class=”band-grid” id=”heatmapBands”></div>
+      <div class=”search-strip”>
+        <div class=”note”><strong>Busca local do heatmap:</strong> encontre e compare IES aqui sem mexer no recorte geral.</div>
+        <input class=”inline-search” id=”heatmapSearch” type=”search” placeholder=”Buscar e filtrar linhas do heatmap: USP, UF, Unipampa...”>
+      </div>
+      <div class=”pin-tray” id=”heatmapPins”></div>
+      <div class=”viz”>
+        <table id=”heatmap”>
+          <thead></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class=”table-note”>
+        <strong>Base documental:</strong> 2014-2021 usam Conceito Enade continuo ponderado. 2025 usa percentual acima do basico. Fonte: base longitudinal tratada + documentacao do novo Enade das Licenciaturas.
+      </div>
+    </section>
+
+    <section>
+      <div class=”section-head”>
+        <h2>Ondas coletivas entre ciclos</h2>
+        <div class=”note”>Subida/queda = variacao de pelo menos 15 pontos na posicao relativa.</div>
+      </div>
+      <div class=”movement-grid” id=”movementGrid”></div>
+    </section>
+
+    <section>
+      <div class=”section-head”>
+        <h2>Fluxo por quartis</h2>
+        <div class=”note”>Mostra se as IES permaneceram no topo, migraram para baixo ou subiram de faixa.</div>
+      </div>
+      <div class=”flow” id=”flowGrid”></div>
+    </section>
+  </main>
+  <footer>
+    Dados: ranking agregado por IES/ano. 2014-2021 usam conceito Enade continuo ponderado por participantes; 2025 usa percentual acima do basico ponderado. “Pontos” nas subidas/descidas significa pontos na escala de posicao relativa, nao pontos de nota Enade. Dashboard gerado em 2026-06-02.
+  </footer>
+  <script id="payload" type="application/json">{"anos":[2014,2017,2021,2025],"rows":[{"nome_ies":"UEL","label":"UEL - UNIVERSIDADE ESTADUAL DE LONDRINA","sigla_ies":"UEL","categoria":"Pessoa Jurídica de Direito Público - Estadual","anos_presentes":4,"participantes_total":74,"principal":true,"years":{"2014":{"score":2.28057853390954,"rank":29,"total":85,"percentil":0.6666666666666667,"participantes":29,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":4.6031,"rank":1,"total":87,"percentil":1.0,"participantes":10,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":3.709,"rank":6,"total":84,"percentil":0.9397590361445783,"participantes":19,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.625,"rank":15,"total":88,"percentil":0.8390804597701149,"participantes":16,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.1724,"movimento":"subiu","melhor_rank":1,"pior_rank":29},{"nome_ies":"UCS","label":"UCS - UNIVERSIDADE DE CAXIAS DO SUL","sigla_ies":"UCS","categoria":"Privada sem fins lucrativos","anos_presentes":4,"participantes_total":50,"principal":true,"years":{"2014":{"score":4.03159099488061,"rank":2,"total":85,"percentil":0.9880952380952381,"participantes":13,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":3.7034,"rank":8,"total":87,"percentil":0.9186046511627907,"participantes":11,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":3.576,"rank":8,"total":84,"percentil":0.9156626506024097,"participantes":19,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.429,"rank":45,"total":88,"percentil":0.49425287356321834,"participantes":7,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.4938,"movimento":"desceu","melhor_rank":2,"pior_rank":45},{"nome_ies":"UNESP","label":"UNESP - UNIVERSIDADE ESTADUAL PAULISTA JÚLIO DE MESQUITA FILHO","sigla_ies":"UNESP","categoria":"Pessoa Jurídica de Direito Público - Estadual","anos_presentes":4,"participantes_total":135,"principal":true,"years":{"2014":{"score":1.7766419077935502,"rank":53,"total":85,"percentil":0.38095238095238093,"participantes":45,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":3.5675,"rank":10,"total":87,"percentil":0.8953488372093024,"participantes":32,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":4.588,"rank":2,"total":84,"percentil":0.9879518072289156,"participantes":36,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.818,"rank":4,"total":88,"percentil":0.9655172413793104,"participantes":22,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.5846,"movimento":"subiu","melhor_rank":2,"pior_rank":53},{"nome_ies":"UNICAMP","label":"UNICAMP - UNIVERSIDADE ESTADUAL DE CAMPINAS","sigla_ies":"UNICAMP","categoria":"Pessoa Jurídica de Direito Público - Estadual","anos_presentes":4,"participantes_total":75,"principal":true,"years":{"2014":{"score":1.7589603392441595,"rank":54,"total":85,"percentil":0.36904761904761907,"participantes":22,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":3.966,"rank":6,"total":87,"percentil":0.9418604651162791,"participantes":21,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":4.315,"rank":4,"total":84,"percentil":0.963855421686747,"participantes":17,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.8669999999999999,"rank":2,"total":88,"percentil":0.9885057471264368,"participantes":15,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.6195,"movimento":"subiu","melhor_rank":2,"pior_rank":54},{"nome_ies":"UDESC","label":"UDESC - FUNDAÇÃO UNIVERSIDADE DO ESTADO DE SANTA CATARINA","sigla_ies":"UDESC","categoria":"Pessoa Jurídica de Direito Público - Estadual","anos_presentes":4,"participantes_total":88,"principal":true,"years":{"2014":{"score":2.46324382708238,"rank":23,"total":85,"percentil":0.7380952380952381,"participantes":17,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":4.3732,"rank":3,"total":87,"percentil":0.9767441860465116,"participantes":29,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":4.497,"rank":3,"total":84,"percentil":0.9759036144578314,"participantes":26,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.625,"rank":15,"total":88,"percentil":0.8390804597701149,"participantes":16,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.101,"movimento":"estavel","melhor_rank":3,"pior_rank":23},{"nome_ies":"UFC","label":"UFC - UNIVERSIDADE FEDERAL DO CEARÁ","sigla_ies":"UFC","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":128,"principal":true,"years":{"2014":{"score":3.8719711415292215,"rank":3,"total":85,"percentil":0.9761904761904762,"participantes":20,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":2.8221342857142857,"rank":21,"total":87,"percentil":0.7674418604651163,"participantes":35,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":2.8570975609756095,"rank":23,"total":84,"percentil":0.7349397590361446,"participantes":41,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.6252187499999999,"rank":14,"total":88,"percentil":0.8505747126436781,"participantes":32,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.1256,"movimento":"estavel","melhor_rank":3,"pior_rank":23},{"nome_ies":"UFRJ","label":"UFRJ - UNIVERSIDADE FEDERAL DO RIO DE JANEIRO","sigla_ies":"UFRJ","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":72,"principal":true,"years":{"2014":{"score":3.85948104754161,"rank":4,"total":85,"percentil":0.9642857142857143,"participantes":18,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":2.1752,"rank":39,"total":87,"percentil":0.5581395348837209,"participantes":7,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":2.98,"rank":19,"total":84,"percentil":0.7831325301204819,"participantes":34,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.462,"rank":41,"total":88,"percentil":0.5402298850574713,"participantes":13,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.4241,"movimento":"desceu","melhor_rank":4,"pior_rank":41},{"nome_ies":"UFSM","label":"UFSM - UNIVERSIDADE FEDERAL DE SANTA MARIA","sigla_ies":"UFSM","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":29,"principal":true,"years":{"2014":{"score":3.31108012213101,"rank":8,"total":85,"percentil":0.9166666666666666,"participantes":11,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":4.0135,"rank":4,"total":87,"percentil":0.9651162790697675,"participantes":2,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":3.509,"rank":10,"total":84,"percentil":0.891566265060241,"participantes":12,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.5,"rank":26,"total":88,"percentil":0.7126436781609196,"participantes":4,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.204,"movimento":"desceu","melhor_rank":4,"pior_rank":26},{"nome_ies":"UFSJ","label":"UFSJ - UNIVERSIDADE FEDERAL DE SÃO JOÃO DEL REI","sigla_ies":"UFSJ","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":209,"principal":true,"years":{"2014":{"score":2.18544647127211,"rank":35,"total":85,"percentil":0.5952380952380952,"participantes":52,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":3.9836,"rank":5,"total":87,"percentil":0.9534883720930233,"participantes":46,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":2.898,"rank":22,"total":84,"percentil":0.7469879518072289,"participantes":50,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.557,"rank":23,"total":88,"percentil":0.7471264367816092,"participantes":61,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.1519,"movimento":"subiu","melhor_rank":5,"pior_rank":35},{"nome_ies":"UFOP","label":"UFOP - UNIVERSIDADE FEDERAL DE OURO PRETO","sigla_ies":"UFOP","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":68,"principal":true,"years":{"2014":{"score":2.34314122181735,"rank":27,"total":85,"percentil":0.6904761904761905,"participantes":25,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":3.5921999999999996,"rank":9,"total":87,"percentil":0.9069767441860466,"participantes":10,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":1.762,"rank":54,"total":84,"percentil":0.3614457831325302,"participantes":14,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.737,"rank":7,"total":88,"percentil":0.9310344827586207,"participantes":19,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.2406,"movimento":"subiu","melhor_rank":7,"pior_rank":54},{"nome_ies":"UFRGS","label":"UFRGS - UNIVERSIDADE FEDERAL DO RIO GRANDE DO SUL","sigla_ies":"UFRGS","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":36,"principal":true,"years":{"2014":{"score":2.9473363677757196,"rank":13,"total":85,"percentil":0.8571428571428572,"participantes":11,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":1.9239999999999997,"rank":47,"total":87,"percentil":0.4651162790697675,"participantes":11,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":3.478,"rank":12,"total":84,"percentil":0.8674698795180723,"participantes":7,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.7139999999999999,"rank":8,"total":88,"percentil":0.9195402298850575,"participantes":7,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.0624,"movimento":"estavel","melhor_rank":8,"pior_rank":47},{"nome_ies":"UFBA","label":"UFBA - UNIVERSIDADE FEDERAL DA BAHIA","sigla_ies":"UFBA","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":154,"principal":true,"years":{"2014":{"score":3.11310217476005,"rank":10,"total":85,"percentil":0.8928571428571429,"participantes":28,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":2.5469,"rank":27,"total":87,"percentil":0.6976744186046512,"participantes":5,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":2.93,"rank":20,"total":84,"percentil":0.7710843373493976,"participantes":20,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.4554158415841583,"rank":43,"total":88,"percentil":0.5172413793103448,"participantes":101,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.3756,"movimento":"desceu","melhor_rank":10,"pior_rank":43},{"nome_ies":"UFMG","label":"UFMG - UNIVERSIDADE FEDERAL DE MINAS GERAIS","sigla_ies":"UFMG","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":151,"principal":true,"years":{"2014":{"score":1.55585497091476,"rank":64,"total":85,"percentil":0.25,"participantes":39,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":2.7273,"rank":22,"total":87,"percentil":0.7558139534883721,"participantes":46,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":3.248,"rank":14,"total":84,"percentil":0.8433734939759037,"participantes":46,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.65,"rank":13,"total":88,"percentil":0.8620689655172413,"participantes":20,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.6121,"movimento":"subiu","melhor_rank":13,"pior_rank":64},{"nome_ies":"UNB","label":"UNB - UNIVERSIDADE DE BRASÍLIA","sigla_ies":"UNB","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":206,"principal":true,"years":{"2014":{"score":1.38254624019185,"rank":67,"total":85,"percentil":0.2142857142857143,"participantes":52,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":1.9720028571428572,"rank":45,"total":87,"percentil":0.4883720930232558,"participantes":70,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":2.6490232558139537,"rank":27,"total":84,"percentil":0.6867469879518072,"participantes":44,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.500275,"rank":25,"total":88,"percentil":0.7241379310344828,"participantes":40,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.5099,"movimento":"subiu","melhor_rank":25,"pior_rank":67},{"nome_ies":"UNIPAMPA","label":"FUNDAÇÃO UNIVERSIDADE FEDERAL DO PAMPA - UNIPAMPA","sigla_ies":"UNIPAMPA","categoria":"Pública Federal","anos_presentes":3,"participantes_total":28,"principal":true,"years":{"2014":null,"2017":{"score":0.9732,"rank":78,"total":87,"percentil":0.10465116279069764,"participantes":8,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":2.434,"rank":30,"total":84,"percentil":0.6506024096385542,"participantes":14,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.8329999999999999,"rank":3,"total":88,"percentil":0.9770114942528736,"participantes":6,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.8724,"movimento":"subiu","melhor_rank":3,"pior_rank":78},{"nome_ies":"UNIRIO","label":"UNIRIO - UNIVERSIDADE FEDERAL DO ESTADO DO RIO DE JANEIRO","sigla_ies":"UNIRIO","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":3,"participantes_total":190,"principal":true,"years":{"2014":null,"2017":{"score":3.5418,"rank":12,"total":87,"percentil":0.872093023255814,"participantes":73,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":2.926,"rank":21,"total":84,"percentil":0.7590361445783133,"participantes":74,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.605,"rank":20,"total":88,"percentil":0.7816091954022988,"participantes":43,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.0905,"movimento":"estavel","melhor_rank":12,"pior_rank":21},{"nome_ies":"USP","label":"USP - UNIVERSIDADE DE SÃO PAULO","sigla_ies":"USP","categoria":"Pública Estadual","anos_presentes":1,"participantes_total":17,"principal":true,"years":{"2014":null,"2017":null,"2021":null,"2025":{"score":1.0,"rank":1,"total":88,"percentil":1.0,"participantes":17,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":null,"movimento":"sem serie","melhor_rank":1,"pior_rank":1},{"nome_ies":"FASM","label":"FASM - FACULDADE SANTA MARCELINA","sigla_ies":"FASM","categoria":"Privada sem fins lucrativos","anos_presentes":4,"participantes_total":17,"principal":false,"years":{"2014":{"score":4.10044033282148,"rank":1,"total":85,"percentil":1.0,"participantes":5,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":4.4622,"rank":2,"total":87,"percentil":0.9883720930232558,"participantes":4,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":5.0,"rank":1,"total":84,"percentil":1.0,"participantes":6,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.5,"rank":26,"total":88,"percentil":0.7126436781609196,"participantes":2,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.2874,"movimento":"desceu","melhor_rank":1,"pior_rank":26},{"nome_ies":"UERGS","label":"UERGS - UNIVERSIDADE ESTADUAL DO RIO GRANDE DO SUL","sigla_ies":"UERGS","categoria":"Pessoa Jurídica de Direito Público - Estadual","anos_presentes":4,"participantes_total":30,"principal":false,"years":{"2014":{"score":3.83042539433269,"rank":5,"total":85,"percentil":0.9523809523809523,"participantes":2,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":3.4715,"rank":13,"total":87,"percentil":0.8604651162790697,"participantes":8,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":1.809,"rank":53,"total":84,"percentil":0.37349397590361444,"participantes":11,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.0,"rank":83,"total":88,"percentil":0.05747126436781613,"participantes":9,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.8949,"movimento":"desceu","melhor_rank":5,"pior_rank":83},{"nome_ies":"UPF","label":"UPF - UNIVERSIDADE DE PASSO FUNDO","sigla_ies":"UPF","categoria":"Privada sem fins lucrativos","anos_presentes":4,"participantes_total":65,"principal":false,"years":{"2014":{"score":2.51050411506307,"rank":21,"total":85,"percentil":0.7619047619047619,"participantes":23,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":2.6465,"rank":24,"total":87,"percentil":0.7325581395348837,"participantes":24,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":1.336,"rank":69,"total":84,"percentil":0.1807228915662651,"participantes":13,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.8,"rank":5,"total":88,"percentil":0.9540229885057472,"participantes":5,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.1921,"movimento":"subiu","melhor_rank":5,"pior_rank":69},{"nome_ies":"UFPR","label":"UFPR - UNIVERSIDADE FEDERAL DO PARANÁ","sigla_ies":"UFPR","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":37,"principal":false,"years":{"2014":{"score":2.80893602518789,"rank":16,"total":85,"percentil":0.8214285714285714,"participantes":2,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":3.8299,"rank":7,"total":87,"percentil":0.9302325581395349,"participantes":7,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":3.245,"rank":15,"total":84,"percentil":0.8313253012048193,"participantes":19,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.556,"rank":24,"total":88,"percentil":0.735632183908046,"participantes":9,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.0858,"movimento":"estavel","melhor_rank":7,"pior_rank":24},{"nome_ies":"UFU","label":"UFU - UNIVERSIDADE FEDERAL DE UBERLÂNDIA","sigla_ies":"UFU","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":90,"principal":false,"years":{"2014":{"score":2.27982966774722,"rank":30,"total":85,"percentil":0.6547619047619048,"participantes":22,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":2.6653766666666665,"rank":23,"total":87,"percentil":0.7441860465116279,"participantes":32,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":3.597,"rank":7,"total":84,"percentil":0.927710843373494,"participantes":19,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.353,"rank":55,"total":88,"percentil":0.3793103448275862,"participantes":17,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.2755,"movimento":"desceu","melhor_rank":7,"pior_rank":55},{"nome_ies":"UNASP","label":"UNASP - CENTRO UNIVERSITÁRIO ADVENTISTA DE SÃO PAULO","sigla_ies":"UNASP","categoria":"Privada sem fins lucrativos","anos_presentes":4,"participantes_total":102,"principal":false,"years":{"2014":{"score":3.39682716178292,"rank":7,"total":85,"percentil":0.9285714285714286,"participantes":18,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":2.4735,"rank":29,"total":87,"percentil":0.6744186046511628,"participantes":38,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":1.905,"rank":51,"total":84,"percentil":0.3975903614457831,"participantes":36,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.5,"rank":26,"total":88,"percentil":0.7126436781609196,"participantes":10,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.2159,"movimento":"desceu","melhor_rank":7,"pior_rank":51},{"nome_ies":"UEPG","label":"UEPG - UNIVERSIDADE ESTADUAL DE PONTA GROSSA","sigla_ies":"UEPG","categoria":"Pessoa Jurídica de Direito Público - Estadual","anos_presentes":4,"participantes_total":38,"principal":false,"years":{"2014":{"score":0.551803338575006,"rank":83,"total":85,"percentil":0.023809523809523836,"participantes":11,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":1.0701,"rank":73,"total":87,"percentil":0.16279069767441856,"participantes":14,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":1.985,"rank":46,"total":84,"percentil":0.45783132530120485,"participantes":6,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.7139999999999999,"rank":8,"total":88,"percentil":0.9195402298850575,"participantes":7,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.8957,"movimento":"subiu","melhor_rank":8,"pior_rank":83},{"nome_ies":"UFPEL","label":"UFPEL - UNIVERSIDADE FEDERAL DE PELOTAS","sigla_ies":"UFPEL","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":62,"principal":false,"years":{"2014":{"score":0.841507956722757,"rank":80,"total":85,"percentil":0.059523809523809534,"participantes":21,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":1.3009,"rank":70,"total":87,"percentil":0.19767441860465118,"participantes":15,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":3.511,"rank":9,"total":84,"percentil":0.9036144578313253,"participantes":11,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.6,"rank":21,"total":88,"percentil":0.7701149425287357,"participantes":15,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.7106,"movimento":"subiu","melhor_rank":9,"pior_rank":80},{"nome_ies":"UNIFIAM-FAAM","label":"UNIFIAM-FAAM - FIAM-FAAM - CENTRO UNIVERSITÁRIO","sigla_ies":"UNIFIAM-FAAM","categoria":"Privada sem fins lucrativos","anos_presentes":4,"participantes_total":120,"principal":false,"years":{"2014":{"score":3.28792999169232,"rank":9,"total":85,"percentil":0.9047619047619048,"participantes":17,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":3.543,"rank":11,"total":87,"percentil":0.8837209302325582,"participantes":72,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":3.5079999999999996,"rank":11,"total":84,"percentil":0.8795180722891567,"participantes":27,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.25,"rank":69,"total":88,"percentil":0.2183908045977011,"participantes":4,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.6864,"movimento":"desceu","melhor_rank":9,"pior_rank":69},{"nome_ies":"UEFS","label":"UEFS - UNIVERSIDADE ESTADUAL DE FEIRA DE SANTANA","sigla_ies":"UEFS","categoria":"Pessoa Jurídica de Direito Público - Estadual","anos_presentes":4,"participantes_total":65,"principal":false,"years":{"2014":{"score":2.78148478761314,"rank":18,"total":85,"percentil":0.7976190476190477,"participantes":6,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":2.559,"rank":25,"total":87,"percentil":0.7209302325581395,"participantes":26,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":2.047,"rank":43,"total":84,"percentil":0.49397590361445787,"participantes":18,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.667,"rank":11,"total":88,"percentil":0.8850574712643678,"participantes":15,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.0874,"movimento":"estavel","melhor_rank":11,"pior_rank":43},{"nome_ies":"UFSCAR","label":"UFSCAR - UNIVERSIDADE FEDERAL DE SÃO CARLOS","sigla_ies":"UFSCAR","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":229,"principal":false,"years":{"2014":{"score":2.63780738223233,"rank":20,"total":85,"percentil":0.7738095238095238,"participantes":48,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":3.09181,"rank":15,"total":87,"percentil":0.8372093023255813,"participantes":140,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":3.01504347826087,"rank":18,"total":84,"percentil":0.7951807228915663,"participantes":23,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.667,"rank":11,"total":88,"percentil":0.8850574712643678,"participantes":18,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.1112,"movimento":"estavel","melhor_rank":11,"pior_rank":20},{"nome_ies":"UCSAL","label":"UCSAL - UNIVERSIDADE CATÓLICA DO SALVADOR","sigla_ies":"UCSAL","categoria":"Privada sem fins lucrativos","anos_presentes":4,"participantes_total":108,"principal":false,"years":{"2014":{"score":0.579580911731294,"rank":82,"total":85,"percentil":0.0357142857142857,"participantes":37,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":1.4602157894736845,"rank":65,"total":87,"percentil":0.2558139534883721,"participantes":38,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":3.363,"rank":13,"total":84,"percentil":0.8554216867469879,"participantes":16,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.412,"rank":48,"total":88,"percentil":0.45977011494252873,"participantes":17,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.4241,"movimento":"subiu","melhor_rank":13,"pior_rank":82},{"nome_ies":"UFAL","label":"UFAL - UNIVERSIDADE FEDERAL DE ALAGOAS","sigla_ies":"UFAL","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":75,"principal":false,"years":{"2014":{"score":2.88697218736692,"rank":14,"total":85,"percentil":0.8452380952380952,"participantes":18,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":1.763,"rank":54,"total":87,"percentil":0.38372093023255816,"participantes":10,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":1.324,"rank":70,"total":84,"percentil":0.1686746987951807,"participantes":32,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.467,"rank":40,"total":88,"percentil":0.5517241379310345,"participantes":15,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.2935,"movimento":"desceu","melhor_rank":14,"pior_rank":70},{"nome_ies":"UECE","label":"UECE - UNIVERSIDADE ESTADUAL DO CEARÁ","sigla_ies":"UECE","categoria":"Pessoa Jurídica de Direito Público - Estadual","anos_presentes":4,"participantes_total":113,"principal":false,"years":{"2014":{"score":2.86067246660189,"rank":15,"total":85,"percentil":0.8333333333333334,"participantes":19,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":2.9124,"rank":20,"total":87,"percentil":0.7790697674418605,"participantes":36,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":1.96,"rank":49,"total":84,"percentil":0.42168674698795183,"participantes":43,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.267,"rank":67,"total":88,"percentil":0.24137931034482762,"participantes":15,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.592,"movimento":"desceu","melhor_rank":15,"pior_rank":67},{"nome_ies":"UFMT","label":"UFMT - UNIVERSIDADE FEDERAL DE MATO GROSSO","sigla_ies":"UFMT","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":29,"principal":false,"years":{"2014":{"score":1.87592127521911,"rank":50,"total":85,"percentil":0.41666666666666663,"participantes":14,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":1.1083,"rank":72,"total":87,"percentil":0.17441860465116277,"participantes":2,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":1.398,"rank":66,"total":84,"percentil":0.2168674698795181,"participantes":5,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.625,"rank":15,"total":88,"percentil":0.8390804597701149,"participantes":8,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.4224,"movimento":"subiu","melhor_rank":15,"pior_rank":72},{"nome_ies":"UFG","label":"UFG - UNIVERSIDADE FEDERAL DE GOIÁS","sigla_ies":"UFG","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":128,"principal":false,"years":{"2014":{"score":2.46716042832922,"rank":22,"total":85,"percentil":0.75,"participantes":62,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":2.913033333333333,"rank":19,"total":87,"percentil":0.7906976744186046,"participantes":18,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":3.06035,"rank":16,"total":84,"percentil":0.8192771084337349,"participantes":20,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.6070714285714286,"rank":19,"total":88,"percentil":0.7931034482758621,"participantes":28,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.0431,"movimento":"estavel","melhor_rank":16,"pior_rank":22},{"nome_ies":"ISEI","label":"ISEI - INSTITUTO SUPERIOR DE EDUCAÇÃO IVOTI","sigla_ies":"ISEI","categoria":"Privada sem fins lucrativos","anos_presentes":4,"participantes_total":22,"principal":false,"years":{"2014":{"score":2.78581903420244,"rank":17,"total":85,"percentil":0.8095238095238095,"participantes":2,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":2.9213,"rank":18,"total":87,"percentil":0.8023255813953488,"participantes":13,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":2.311,"rank":35,"total":84,"percentil":0.5903614457831325,"participantes":3,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.5,"rank":26,"total":88,"percentil":0.7126436781609196,"participantes":4,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.0969,"movimento":"estavel","melhor_rank":17,"pior_rank":35},{"nome_ies":"UNISO","label":"UNISO - UNIVERSIDADE DE SOROCABA","sigla_ies":"UNISO","categoria":"Privada sem fins lucrativos","anos_presentes":4,"participantes_total":60,"principal":false,"years":{"2014":{"score":1.9648583257577,"rank":44,"total":85,"percentil":0.48809523809523814,"participantes":18,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":1.4663,"rank":64,"total":87,"percentil":0.2674418604651163,"participantes":26,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":3.042,"rank":17,"total":84,"percentil":0.8072289156626506,"participantes":9,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.571,"rank":22,"total":88,"percentil":0.7586206896551724,"participantes":7,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.2705,"movimento":"subiu","melhor_rank":17,"pior_rank":64},{"nome_ies":"UNESPAR","label":"UNESPAR - Universidade Estadual do Paraná","sigla_ies":"UNESPAR","categoria":"Pessoa Jurídica de Direito Público - Estadual","anos_presentes":4,"participantes_total":112,"principal":false,"years":{"2014":{"score":2.39369231089716,"rank":26,"total":85,"percentil":0.7023809523809523,"participantes":41,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":2.5546,"rank":26,"total":87,"percentil":0.7093023255813953,"participantes":32,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":2.0675,"rank":41,"total":84,"percentil":0.5180722891566265,"participantes":16,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.6085652173913043,"rank":18,"total":88,"percentil":0.8045977011494253,"participantes":23,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.1022,"movimento":"estavel","melhor_rank":18,"pior_rank":41},{"nome_ies":"UFPE","label":"UFPE - UNIVERSIDADE FEDERAL DE PERNAMBUCO","sigla_ies":"UFPE","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":184,"principal":false,"years":{"2014":{"score":2.65122986694211,"rank":19,"total":85,"percentil":0.7857142857142857,"participantes":38,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":1.8992,"rank":49,"total":87,"percentil":0.4418604651162791,"participantes":70,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":1.219,"rank":72,"total":84,"percentil":0.14457831325301207,"participantes":42,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.412,"rank":48,"total":88,"percentil":0.45977011494252873,"participantes":34,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.3259,"movimento":"desceu","melhor_rank":19,"pior_rank":72},{"nome_ies":"UERN","label":"UERN - UNIVERSIDADE DO ESTADO DO RIO GRANDE DO NORTE","sigla_ies":"UERN","categoria":"Pessoa Jurídica de Direito Público - Estadual","anos_presentes":4,"participantes_total":75,"principal":false,"years":{"2014":{"score":0.922114899954043,"rank":78,"total":85,"percentil":0.08333333333333337,"participantes":12,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":0.9883999999999998,"rank":77,"total":87,"percentil":0.11627906976744184,"participantes":14,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":2.838,"rank":24,"total":84,"percentil":0.7228915662650602,"participantes":16,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.3031818181818181,"rank":63,"total":88,"percentil":0.28735632183908044,"participantes":33,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.204,"movimento":"subiu","melhor_rank":24,"pior_rank":78},{"nome_ies":"UFPI","label":"UFPI - UNIVERSIDADE FEDERAL DO PIAUÍ","sigla_ies":"UFPI","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":101,"principal":false,"years":{"2014":{"score":2.43175777015373,"rank":24,"total":85,"percentil":0.7261904761904762,"participantes":24,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":1.9277,"rank":46,"total":87,"percentil":0.4767441860465116,"participantes":41,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":1.951,"rank":50,"total":84,"percentil":0.40963855421686746,"participantes":26,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.4,"rank":51,"total":88,"percentil":0.4252873563218391,"participantes":10,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.3009,"movimento":"desceu","melhor_rank":24,"pior_rank":51},{"nome_ies":"UFAM","label":"UFAM - UNIVERSIDADE FEDERAL DO AMAZONAS","sigla_ies":"UFAM","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":68,"principal":false,"years":{"2014":{"score":2.39405693636834,"rank":25,"total":85,"percentil":0.7142857142857143,"participantes":4,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":1.6170999999999998,"rank":58,"total":87,"percentil":0.33720930232558144,"participantes":27,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":2.318,"rank":34,"total":84,"percentil":0.6024096385542168,"participantes":24,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.1539999999999999,"rank":80,"total":88,"percentil":0.09195402298850575,"participantes":13,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.6223,"movimento":"desceu","melhor_rank":25,"pior_rank":80},{"nome_ies":"UEMG","label":"UEMG - UNIVERSIDADE DO ESTADO DE MINAS GERAIS","sigla_ies":"UEMG","categoria":"Pessoa Jurídica de Direito Público - Estadual","anos_presentes":4,"participantes_total":252,"principal":false,"years":{"2014":{"score":1.73912818374885,"rank":55,"total":85,"percentil":0.3571428571428571,"participantes":55,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":2.4803913793103445,"rank":28,"total":87,"percentil":0.686046511627907,"participantes":58,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":1.9912530120481928,"rank":45,"total":84,"percentil":0.4698795180722891,"participantes":83,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.5,"rank":26,"total":88,"percentil":0.7126436781609196,"participantes":56,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.3555,"movimento":"subiu","melhor_rank":26,"pior_rank":55},{"nome_ies":"UFMA","label":"UFMA - UNIVERSIDADE FEDERAL DO MARANHÃO","sigla_ies":"UFMA","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":96,"principal":false,"years":{"2014":{"score":1.56824796240611,"rank":61,"total":85,"percentil":0.2857142857142857,"participantes":12,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":1.032,"rank":75,"total":87,"percentil":0.13953488372093026,"participantes":48,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":1.474,"rank":64,"total":84,"percentil":0.24096385542168675,"participantes":30,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.5,"rank":26,"total":88,"percentil":0.7126436781609196,"participantes":6,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.4269,"movimento":"subiu","melhor_rank":26,"pior_rank":75},{"nome_ies":"UNIPLAC","label":"UNIPLAC - UNIVERSIDADE DO PLANALTO CATARINENSE","sigla_ies":"UNIPLAC","categoria":"Privada sem fins lucrativos","anos_presentes":4,"participantes_total":37,"principal":false,"years":{"2014":{"score":1.43047337901099,"rank":66,"total":85,"percentil":0.22619047619047616,"participantes":6,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":0.2367,"rank":87,"total":87,"percentil":0.0,"participantes":8,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":2.689,"rank":26,"total":84,"percentil":0.6987951807228916,"participantes":15,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.375,"rank":53,"total":88,"percentil":0.4022988505747126,"participantes":8,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.1761,"movimento":"subiu","melhor_rank":26,"pior_rank":87},{"nome_ies":"UNIVALI","label":"UNIVALI - UNIVERSIDADE DO VALE DO ITAJAÍ","sigla_ies":"UNIVALI","categoria":"Pessoa Jurídica de Direito Privado - Sem fins lucrativos - Fundação","anos_presentes":4,"participantes_total":36,"principal":false,"years":{"2014":{"score":2.27144920504922,"rank":31,"total":85,"percentil":0.6428571428571428,"participantes":12,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":2.294,"rank":34,"total":87,"percentil":0.6162790697674418,"participantes":17,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":2.375,"rank":32,"total":84,"percentil":0.6265060240963856,"participantes":5,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.5,"rank":26,"total":88,"percentil":0.7126436781609196,"participantes":2,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.0698,"movimento":"estavel","melhor_rank":26,"pior_rank":34},{"nome_ies":"FURB","label":"FURB - UNIVERSIDADE REGIONAL DE BLUMENAU","sigla_ies":"FURB","categoria":"Pessoa Jurídica de Direito Público - Municipal","anos_presentes":4,"participantes_total":43,"principal":false,"years":{"2014":{"score":2.33090685252442,"rank":28,"total":85,"percentil":0.6785714285714286,"participantes":14,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":2.0956,"rank":42,"total":87,"percentil":0.5232558139534884,"participantes":14,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":1.723,"rank":56,"total":84,"percentil":0.3373493975903614,"participantes":12,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.333,"rank":57,"total":88,"percentil":0.3563218390804598,"participantes":3,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.3222,"movimento":"desceu","melhor_rank":28,"pior_rank":57},{"nome_ies":"UNIS-MG","label":"UNIS-MG - CENTRO UNIVERSITÁRIO DO SUL DE MINAS","sigla_ies":"UNIS-MG","categoria":"Privada sem fins lucrativos","anos_presentes":4,"participantes_total":122,"principal":false,"years":{"2014":{"score":1.94738429056577,"rank":46,"total":85,"percentil":0.4642857142857143,"participantes":46,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":2.4139,"rank":31,"total":87,"percentil":0.6511627906976745,"participantes":19,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":1.696,"rank":58,"total":84,"percentil":0.3132530120481928,"participantes":41,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.313,"rank":62,"total":88,"percentil":0.29885057471264365,"participantes":16,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.1654,"movimento":"desceu","melhor_rank":31,"pior_rank":62},{"nome_ies":"UFRN","label":"UFRN - UNIVERSIDADE FEDERAL DO RIO GRANDE DO NORTE","sigla_ies":"UFRN","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":158,"principal":false,"years":{"2014":{"score":1.62099119087862,"rank":60,"total":85,"percentil":0.29761904761904767,"participantes":42,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":2.363,"rank":32,"total":87,"percentil":0.6395348837209303,"participantes":40,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":1.291,"rank":71,"total":84,"percentil":0.15662650602409633,"participantes":40,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.4719999999999999,"rank":38,"total":88,"percentil":0.5747126436781609,"participantes":36,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.2771,"movimento":"subiu","melhor_rank":32,"pior_rank":71},{"nome_ies":"UFCG","label":"UFCG - UNIVERSIDADE FEDERAL DE CAMPINA GRANDE","sigla_ies":"UFCG","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":57,"principal":false,"years":{"2014":{"score":2.19280227161862,"rank":34,"total":85,"percentil":0.6071428571428572,"participantes":15,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":2.0445,"rank":44,"total":87,"percentil":0.5,"participantes":19,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":1.58,"rank":61,"total":84,"percentil":0.27710843373493976,"participantes":19,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.0,"rank":83,"total":88,"percentil":0.05747126436781613,"participantes":4,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.5497,"movimento":"desceu","melhor_rank":34,"pior_rank":83},{"nome_ies":"UFS","label":"UFS - UNIVERSIDADE FEDERAL DE SERGIPE","sigla_ies":"UFS","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":141,"principal":false,"years":{"2014":{"score":1.91823756756062,"rank":48,"total":85,"percentil":0.44047619047619047,"participantes":35,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":2.2455,"rank":35,"total":87,"percentil":0.6046511627906976,"participantes":39,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":0.634,"rank":80,"total":84,"percentil":0.048192771084337394,"participantes":42,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.32,"rank":61,"total":88,"percentil":0.31034482758620685,"participantes":25,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.1301,"movimento":"estavel","melhor_rank":35,"pior_rank":80},{"nome_ies":"UFCA","label":"UFCA - UNIVERSIDADE FEDERAL DO CARIRI","sigla_ies":"UFCA","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":145,"principal":false,"years":{"2014":{"score":2.16831635750742,"rank":37,"total":85,"percentil":0.5714285714285714,"participantes":25,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":1.8625,"rank":50,"total":87,"percentil":0.43023255813953487,"participantes":36,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":1.982,"rank":47,"total":84,"percentil":0.4457831325301205,"participantes":48,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.278,"rank":66,"total":88,"percentil":0.25287356321839083,"participantes":36,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.3186,"movimento":"desceu","melhor_rank":37,"pior_rank":66},{"nome_ies":"UFES","label":"UFES - UNIVERSIDADE FEDERAL DO ESPÍRITO SANTO","sigla_ies":"UFES","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":124,"principal":false,"years":{"2014":{"score":1.83196832493127,"rank":52,"total":85,"percentil":0.3928571428571429,"participantes":47,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":2.2276,"rank":37,"total":87,"percentil":0.5813953488372092,"participantes":33,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":2.19,"rank":38,"total":84,"percentil":0.5542168674698795,"participantes":22,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.455,"rank":44,"total":88,"percentil":0.5057471264367817,"participantes":22,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.1129,"movimento":"estavel","melhor_rank":37,"pior_rank":52},{"nome_ies":"UFMS","label":"UFMS - UNIVERSIDADE FEDERAL DE MATO GROSSO DO SUL","sigla_ies":"UFMS","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":85,"principal":false,"years":{"2014":{"score":2.00890974670263,"rank":43,"total":85,"percentil":0.5,"participantes":16,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":2.2222,"rank":38,"total":87,"percentil":0.5697674418604651,"participantes":23,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":2.14,"rank":39,"total":84,"percentil":0.5421686746987953,"participantes":21,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.48,"rank":37,"total":88,"percentil":0.5862068965517242,"participantes":25,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.0862,"movimento":"estavel","melhor_rank":37,"pior_rank":43},{"nome_ies":"UFPB","label":"UFPB - UNIVERSIDADE FEDERAL DA PARAÍBA","sigla_ies":"UFPB","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":175,"principal":false,"years":{"2014":{"score":1.9617122226412005,"rank":45,"total":85,"percentil":0.47619047619047616,"participantes":38,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":1.5154,"rank":61,"total":87,"percentil":0.3023255813953488,"participantes":42,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":2.039,"rank":44,"total":84,"percentil":0.4819277108433735,"participantes":63,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.469,"rank":39,"total":88,"percentil":0.5632183908045977,"participantes":32,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.087,"movimento":"estavel","melhor_rank":39,"pior_rank":61},{"nome_ies":"FAMES","label":"FAMES - FACULDADE DE MÚSICA DO ESPÍRITO SANTO MAURÍCIO DE OLIVEIRA","sigla_ies":"FAMES","categoria":"Pessoa Jurídica de Direito Público - Estadual","anos_presentes":4,"participantes_total":148,"principal":false,"years":{"2014":{"score":2.13132668574131,"rank":40,"total":85,"percentil":0.5357142857142857,"participantes":39,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":1.4021,"rank":67,"total":87,"percentil":0.2325581395348837,"participantes":34,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":1.365,"rank":68,"total":84,"percentil":0.19277108433734935,"participantes":52,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.348,"rank":56,"total":88,"percentil":0.367816091954023,"participantes":23,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.1679,"movimento":"desceu","melhor_rank":40,"pior_rank":68},{"nome_ies":"UNIMONTES","label":"UNIMONTES - UNIVERSIDADE ESTADUAL DE MONTES CLAROS","sigla_ies":"UNIMONTES","categoria":"Pessoa Jurídica de Direito Público - Estadual","anos_presentes":4,"participantes_total":55,"principal":false,"years":{"2014":{"score":1.68716079877672,"rank":57,"total":85,"percentil":0.33333333333333337,"participantes":21,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":1.1835,"rank":71,"total":87,"percentil":0.18604651162790697,"participantes":18,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":2.051,"rank":42,"total":84,"percentil":0.5060240963855422,"participantes":8,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.125,"rank":81,"total":88,"percentil":0.08045977011494254,"participantes":8,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.2529,"movimento":"desceu","melhor_rank":42,"pior_rank":81},{"nome_ies":"UNIR","label":"UNIR - FUNDAÇÃO UNIVERSIDADE FEDERAL DE RONDÔNIA","sigla_ies":"UNIR","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":39,"principal":false,"years":{"2014":{"score":2.01214665035286,"rank":42,"total":85,"percentil":0.5119047619047619,"participantes":11,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":1.5306,"rank":60,"total":87,"percentil":0.313953488372093,"participantes":10,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":1.055,"rank":75,"total":84,"percentil":0.10843373493975905,"participantes":12,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.333,"rank":57,"total":88,"percentil":0.3563218390804598,"participantes":6,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.1556,"movimento":"desceu","melhor_rank":42,"pior_rank":75},{"nome_ies":"FMCG","label":"FMCG - FACULDADE DE MÚSICA CARLOS GOMES","sigla_ies":"FMCG","categoria":"Privada com fins lucrativos","anos_presentes":4,"participantes_total":131,"principal":false,"years":{"2014":{"score":0.49955172753395,"rank":85,"total":85,"percentil":0.0,"participantes":110,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":1.8148,"rank":52,"total":87,"percentil":0.40697674418604646,"participantes":11,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":0.63,"rank":81,"total":84,"percentil":0.03614457831325302,"participantes":8,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.0,"rank":83,"total":88,"percentil":0.05747126436781613,"participantes":2,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.0575,"movimento":"estavel","melhor_rank":52,"pior_rank":85},{"nome_ies":"IFG","label":"IFG - INSTITUTO FEDERAL DE EDUCAÇÃO, CIÊNCIA E TECNOLOGIA DE GOIÁS","sigla_ies":"IFG","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":99,"principal":false,"years":{"2014":{"score":1.7388845651769298,"rank":56,"total":85,"percentil":0.34523809523809523,"participantes":21,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":1.4995,"rank":63,"total":87,"percentil":0.2790697674418605,"participantes":38,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":1.556,"rank":62,"total":84,"percentil":0.2650602409638554,"participantes":24,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.375,"rank":53,"total":88,"percentil":0.4022988505747126,"participantes":16,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.0571,"movimento":"estavel","melhor_rank":53,"pior_rank":63},{"nome_ies":"IFPE","label":"IFPE - INSTITUTO FEDERAL DE EDUCAÇÃO, CIÊNCIA E TECNOLOGIA DE PERNAMBUCO","sigla_ies":"IFPE","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":73,"principal":false,"years":{"2014":{"score":1.55906513984525,"rank":63,"total":85,"percentil":0.26190476190476186,"participantes":8,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":1.7897999999999998,"rank":53,"total":87,"percentil":0.39534883720930236,"participantes":23,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":1.392,"rank":67,"total":84,"percentil":0.20481927710843373,"participantes":21,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.286,"rank":64,"total":88,"percentil":0.27586206896551724,"participantes":21,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.014,"movimento":"estavel","melhor_rank":53,"pior_rank":67},{"nome_ies":"UEMA","label":"UEMA - UNIVERSIDADE ESTADUAL DO MARANHÃO","sigla_ies":"UEMA","categoria":"Pessoa Jurídica de Direito Público - Estadual","anos_presentes":4,"participantes_total":417,"principal":false,"years":{"2014":{"score":1.66724818897988,"rank":58,"total":85,"percentil":0.3214285714285714,"participantes":35,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":0.7272,"rank":84,"total":87,"percentil":0.03488372093023251,"participantes":44,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":0.5400166666666667,"rank":83,"total":84,"percentil":0.012048192771084376,"participantes":300,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.2371578947368421,"rank":72,"total":88,"percentil":0.1839080459770115,"participantes":38,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.1375,"movimento":"estavel","melhor_rank":58,"pior_rank":84},{"nome_ies":"UNIMES","label":"UNIMES - UNIVERSIDADE METROPOLITANA DE SANTOS","sigla_ies":"UNIMES","categoria":"Privada sem fins lucrativos","anos_presentes":4,"participantes_total":338,"principal":false,"years":{"2014":{"score":1.53584321151842,"rank":65,"total":85,"percentil":0.23809523809523814,"participantes":147,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":1.3542,"rank":68,"total":87,"percentil":0.22093023255813948,"participantes":118,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":1.156,"rank":73,"total":84,"percentil":0.1325301204819277,"participantes":20,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.208,"rank":76,"total":88,"percentil":0.13793103448275867,"participantes":53,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.1002,"movimento":"estavel","melhor_rank":65,"pior_rank":76},{"nome_ies":"UNISANT'ANNA","label":"UNISANT'ANNA - CENTRO UNIVERSITÁRIO SANT´ANNA","sigla_ies":"UNISANT'ANNA","categoria":"Privada sem fins lucrativos","anos_presentes":4,"participantes_total":207,"principal":false,"years":{"2014":{"score":1.12664830828676,"rank":70,"total":85,"percentil":0.1785714285714286,"participantes":128,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":0.614,"rank":85,"total":87,"percentil":0.023255813953488413,"participantes":37,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":0.962,"rank":77,"total":84,"percentil":0.08433734939759041,"participantes":33,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.2222222222222222,"rank":75,"total":88,"percentil":0.14942528735632188,"participantes":9,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.0291,"movimento":"estavel","melhor_rank":70,"pior_rank":85},{"nome_ies":"UFAC","label":"UFAC - UNIVERSIDADE FEDERAL DO ACRE","sigla_ies":"UFAC","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":4,"participantes_total":86,"principal":false,"years":{"2014":{"score":0.865633654240554,"rank":79,"total":85,"percentil":0.0714285714285714,"participantes":11,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":0.9626,"rank":79,"total":87,"percentil":0.09302325581395354,"participantes":37,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":0.581,"rank":82,"total":84,"percentil":0.02409638554216864,"participantes":35,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.0,"rank":83,"total":88,"percentil":0.05747126436781613,"participantes":3,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.014,"movimento":"estavel","melhor_rank":79,"pior_rank":83},{"nome_ies":"EST","label":"Faculdades EST","sigla_ies":"EST","categoria":"Privada sem fins lucrativos","anos_presentes":3,"participantes_total":18,"principal":false,"years":{"2014":null,"2017":{"score":1.912,"rank":48,"total":87,"percentil":0.4534883720930233,"participantes":13,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":3.841,"rank":5,"total":84,"percentil":0.9518072289156626,"participantes":2,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.6670000000000001,"rank":10,"total":88,"percentil":0.896551724137931,"participantes":3,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.4431,"movimento":"subiu","melhor_rank":5,"pior_rank":48},{"nome_ies":"F.I.C.","label":"F.I.C. - FACULDADE INTEGRAL CANTAREIRA","sigla_ies":"F.I.C.","categoria":"Privada sem fins lucrativos","anos_presentes":3,"participantes_total":109,"principal":false,"years":{"2014":{"score":3.50567750857542,"rank":6,"total":85,"percentil":0.9404761904761905,"participantes":23,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":2.469,"rank":30,"total":87,"percentil":0.6627906976744187,"participantes":64,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":2.519,"rank":28,"total":84,"percentil":0.6746987951807228,"participantes":22,"tipo":"conceito_enade_continuo_ponderado"},"2025":null},"delta_serie":-0.2658,"movimento":"desceu","melhor_rank":6,"pior_rank":30},{"nome_ies":"IPA","label":"IPA - CENTRO UNIVERSITÁRIO METODISTA","sigla_ies":"IPA","categoria":"Privada sem fins lucrativos","anos_presentes":3,"participantes_total":85,"principal":false,"years":{"2014":{"score":1.31025843671903,"rank":68,"total":85,"percentil":0.20238095238095233,"participantes":40,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":3.0139,"rank":16,"total":87,"percentil":0.8255813953488372,"participantes":28,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":0.908,"rank":78,"total":84,"percentil":0.07228915662650603,"participantes":17,"tipo":"conceito_enade_continuo_ponderado"},"2025":null},"delta_serie":-0.1301,"movimento":"estavel","melhor_rank":16,"pior_rank":78},{"nome_ies":"UNISANTOS","label":"UNISANTOS - UNIVERSIDADE CATÓLICA DE SANTOS","sigla_ies":"UNISANTOS","categoria":"Privada sem fins lucrativos","anos_presentes":3,"participantes_total":42,"principal":false,"years":{"2014":{"score":2.08261978858153,"rank":41,"total":85,"percentil":0.5238095238095238,"participantes":26,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":2.0769,"rank":43,"total":87,"percentil":0.5116279069767442,"participantes":10,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":2.741,"rank":25,"total":84,"percentil":0.7108433734939759,"participantes":6,"tipo":"conceito_enade_continuo_ponderado"},"2025":null},"delta_serie":0.187,"movimento":"subiu","melhor_rank":25,"pior_rank":43},{"nome_ies":"PUCPR","label":"PUCPR - PONTIFÍCIA UNIVERSIDADE CATÓLICA DO PARANÁ","sigla_ies":"PUCPR","categoria":"Privada sem fins lucrativos","anos_presentes":3,"participantes_total":75,"principal":false,"years":{"2014":{"score":2.20923676958542,"rank":32,"total":85,"percentil":0.6309523809523809,"participantes":27,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":1.7428,"rank":55,"total":87,"percentil":0.37209302325581395,"participantes":24,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":2.22,"rank":37,"total":84,"percentil":0.5662650602409638,"participantes":23,"tipo":"conceito_enade_continuo_ponderado"},"2025":null},"delta_serie":-0.0647,"movimento":"estavel","melhor_rank":32,"pior_rank":55},{"nome_ies":"UNOESTE","label":"UNOESTE - UNIVERSIDADE DO OESTE PAULISTA","sigla_ies":"UNOESTE","categoria":"Privada sem fins lucrativos","anos_presentes":3,"participantes_total":56,"principal":false,"years":{"2014":{"score":1.06194783091444,"rank":74,"total":85,"percentil":0.13095238095238093,"participantes":28,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":2.3257,"rank":33,"total":87,"percentil":0.627906976744186,"participantes":20,"tipo":"conceito_enade_continuo_ponderado"},"2021":null,"2025":{"score":0.25,"rank":69,"total":88,"percentil":0.2183908045977011,"participantes":8,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.0874,"movimento":"estavel","melhor_rank":33,"pior_rank":74},{"nome_ies":"UEA","label":"UEA - UNIVERSIDADE DO ESTADO DO AMAZONAS","sigla_ies":"UEA","categoria":"Pessoa Jurídica de Direito Público - Estadual","anos_presentes":3,"participantes_total":25,"principal":false,"years":{"2014":{"score":2.17739224395126,"rank":36,"total":85,"percentil":0.5833333333333333,"participantes":9,"tipo":"conceito_enade_continuo_ponderado"},"2017":null,"2021":{"score":0.7130000000000001,"rank":79,"total":84,"percentil":0.06024096385542166,"participantes":13,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.333,"rank":57,"total":88,"percentil":0.3563218390804598,"participantes":3,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.227,"movimento":"desceu","melhor_rank":36,"pior_rank":79},{"nome_ies":"UNINCOR","label":"UNINCOR - UNIVERSIDADE VALE DO RIO VERDE","sigla_ies":"UNINCOR","categoria":"Privada sem fins lucrativos","anos_presentes":3,"participantes_total":91,"principal":false,"years":{"2014":{"score":2.13503650795491,"rank":39,"total":85,"percentil":0.5476190476190477,"participantes":44,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":1.0176,"rank":76,"total":87,"percentil":0.12790697674418605,"participantes":39,"tipo":"conceito_enade_continuo_ponderado"},"2021":null,"2025":{"score":0.0,"rank":83,"total":88,"percentil":0.05747126436781613,"participantes":8,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.4901,"movimento":"desceu","melhor_rank":39,"pior_rank":83},{"nome_ies":"UNIMEP","label":"UNIMEP - UNIVERSIDADE METODISTA DE PIRACICABA","sigla_ies":"UNIMEP","categoria":"Privada sem fins lucrativos","anos_presentes":3,"participantes_total":70,"principal":false,"years":{"2014":{"score":1.87399622650329,"rank":51,"total":85,"percentil":0.40476190476190477,"participantes":41,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":0.8395,"rank":82,"total":87,"percentil":0.05813953488372092,"participantes":19,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":1.112,"rank":74,"total":84,"percentil":0.12048192771084343,"participantes":10,"tipo":"conceito_enade_continuo_ponderado"},"2025":null},"delta_serie":-0.2843,"movimento":"desceu","melhor_rank":51,"pior_rank":82},{"nome_ies":"UFPA","label":"UFPA - UNIVERSIDADE FEDERAL DO PARÁ","sigla_ies":"UFPA","categoria":"Pessoa Jurídica de Direito Público - Federal","anos_presentes":3,"participantes_total":141,"principal":false,"years":{"2014":{"score":0.9227360771708948,"rank":77,"total":85,"percentil":0.09523809523809523,"participantes":45,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":1.6829,"rank":56,"total":87,"percentil":0.36046511627906974,"participantes":59,"tipo":"conceito_enade_continuo_ponderado"},"2021":null,"2025":{"score":0.243,"rank":71,"total":88,"percentil":0.1954022988505747,"participantes":37,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.1002,"movimento":"estavel","melhor_rank":56,"pior_rank":77},{"nome_ies":"UEM","label":"UEM - UNIVERSIDADE ESTADUAL DE MARINGÁ","sigla_ies":"UEM","categoria":"Pessoa Jurídica de Direito Público - Estadual","anos_presentes":2,"participantes_total":7,"principal":false,"years":{"2014":{"score":3.08173090602812,"rank":11,"total":85,"percentil":0.8809523809523809,"participantes":3,"tipo":"conceito_enade_continuo_ponderado"},"2017":null,"2021":null,"2025":{"score":0.75,"rank":6,"total":88,"percentil":0.9425287356321839,"participantes":4,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.0616,"movimento":"estavel","melhor_rank":6,"pior_rank":11},{"nome_ies":"UNAERP","label":"UNAERP - UNIVERSIDADE DE RIBEIRÃO PRETO","sigla_ies":"UNAERP","categoria":"Privada sem fins lucrativos","anos_presentes":2,"participantes_total":22,"principal":false,"years":{"2014":{"score":3.0310466610709,"rank":12,"total":85,"percentil":0.8690476190476191,"participantes":7,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":3.4711,"rank":14,"total":87,"percentil":0.8488372093023255,"participantes":15,"tipo":"conceito_enade_continuo_ponderado"},"2021":null,"2025":null},"delta_serie":-0.0202,"movimento":"estavel","melhor_rank":12,"pior_rank":14},{"nome_ies":"FACULDADE DE CASCAVEL","label":"FACULDADE DE CASCAVEL","sigla_ies":"","categoria":"Privada com fins lucrativos","anos_presentes":2,"participantes_total":12,"principal":false,"years":{"2014":null,"2017":{"score":2.9491,"rank":17,"total":87,"percentil":0.813953488372093,"participantes":7,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":2.293,"rank":36,"total":84,"percentil":0.5783132530120482,"participantes":5,"tipo":"conceito_enade_continuo_ponderado"},"2025":null},"delta_serie":-0.2356,"movimento":"desceu","melhor_rank":17,"pior_rank":36},{"nome_ies":"UFJF","label":"UFJF - UNIVERSIDADE FEDERAL DE JUIZ DE FORA","sigla_ies":"UFJF","categoria":"Pública Federal","anos_presentes":2,"participantes_total":33,"principal":false,"years":{"2014":null,"2017":null,"2021":{"score":1.967,"rank":48,"total":84,"percentil":0.4337349397590361,"participantes":21,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.5,"rank":26,"total":88,"percentil":0.7126436781609196,"participantes":12,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.2789,"movimento":"subiu","melhor_rank":26,"pior_rank":48},{"nome_ies":"UCP","label":"UCP - UNIVERSIDADE CATÓLICA DE PETRÓPOLIS","sigla_ies":"UCP","categoria":"Privada sem fins lucrativos","anos_presentes":2,"participantes_total":19,"principal":false,"years":{"2014":null,"2017":null,"2021":{"score":2.506,"rank":29,"total":84,"percentil":0.6626506024096386,"participantes":12,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.429,"rank":45,"total":88,"percentil":0.49425287356321834,"participantes":7,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.1684,"movimento":"desceu","melhor_rank":29,"pior_rank":45},{"nome_ies":"UEAP","label":"UEAP - UNIVERSIDADE DO ESTADO DO AMAPÁ","sigla_ies":"UEAP","categoria":"Pública Estadual","anos_presentes":2,"participantes_total":25,"principal":false,"years":{"2014":null,"2017":null,"2021":{"score":2.385,"rank":31,"total":84,"percentil":0.6385542168674698,"participantes":7,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.389,"rank":52,"total":88,"percentil":0.4137931034482759,"participantes":18,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.2248,"movimento":"desceu","melhor_rank":31,"pior_rank":52},{"nome_ies":"UCAM","label":"UCAM - UNIVERSIDADE CÂNDIDO MENDES","sigla_ies":"UCAM","categoria":"Privada sem fins lucrativos","anos_presentes":2,"participantes_total":43,"principal":false,"years":{"2014":{"score":2.20358826524517,"rank":33,"total":85,"percentil":0.6190476190476191,"participantes":23,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":0.2659,"rank":86,"total":87,"percentil":0.011627906976744207,"participantes":20,"tipo":"conceito_enade_continuo_ponderado"},"2021":null,"2025":null},"delta_serie":-0.6074,"movimento":"desceu","melhor_rank":33,"pior_rank":86},{"nome_ies":"UFRR","label":"UFRR - UNIVERSIDADE FEDERAL DE RORAIMA","sigla_ies":"UFRR","categoria":"Pública Federal","anos_presentes":2,"participantes_total":20,"principal":false,"years":{"2014":null,"2017":null,"2021":{"score":2.326,"rank":33,"total":84,"percentil":0.6144578313253012,"participantes":7,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.462,"rank":41,"total":88,"percentil":0.5402298850574713,"participantes":13,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.0742,"movimento":"estavel","melhor_rank":33,"pior_rank":41},{"nome_ies":"USC","label":"USC - UNIVERSIDADE DO SAGRADO CORAÇÃO","sigla_ies":"USC","categoria":"Privada sem fins lucrativos","anos_presentes":2,"participantes_total":36,"principal":false,"years":{"2014":{"score":1.12204855495268,"rank":72,"total":85,"percentil":0.15476190476190477,"participantes":11,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":2.2401,"rank":36,"total":87,"percentil":0.5930232558139534,"participantes":25,"tipo":"conceito_enade_continuo_ponderado"},"2021":null,"2025":null},"delta_serie":0.4383,"movimento":"subiu","melhor_rank":36,"pior_rank":72},{"nome_ies":"FABAT","label":"FABAT - FACULDADE BATISTA DO RIO DE JANEIRO","sigla_ies":"FABAT","categoria":"Privada sem fins lucrativos","anos_presentes":2,"participantes_total":28,"principal":false,"years":{"2014":{"score":2.16336936863267,"rank":38,"total":85,"percentil":0.5595238095238095,"participantes":10,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":1.4157,"rank":66,"total":87,"percentil":0.2441860465116279,"participantes":18,"tipo":"conceito_enade_continuo_ponderado"},"2021":null,"2025":null},"delta_serie":-0.3153,"movimento":"desceu","melhor_rank":38,"pior_rank":66},{"nome_ies":"IF SERTÃO","label":"IF Sertão - Instituto Federal de Educação, Ciência e Tecnologia do Sertão Pernambucano","sigla_ies":"IF Sertão","categoria":"Pública Federal","anos_presentes":2,"participantes_total":43,"principal":false,"years":{"2014":null,"2017":{"score":2.1713,"rank":40,"total":87,"percentil":0.5465116279069768,"participantes":25,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":1.596,"rank":60,"total":84,"percentil":0.28915662650602414,"participantes":18,"tipo":"conceito_enade_continuo_ponderado"},"2025":null},"delta_serie":-0.2574,"movimento":"desceu","melhor_rank":40,"pior_rank":60},{"nome_ies":"UNICESUMAR","label":"CENTRO UNIVERSITÁRIO DE MARINGÁ - UNICESUMAR","sigla_ies":"UNICESUMAR","categoria":"Privada com fins lucrativos","anos_presentes":2,"participantes_total":83,"principal":false,"years":{"2014":null,"2017":{"score":2.1068,"rank":41,"total":87,"percentil":0.5348837209302326,"participantes":17,"tipo":"conceito_enade_continuo_ponderado"},"2021":null,"2025":{"score":0.227,"rank":73,"total":88,"percentil":0.1724137931034483,"participantes":66,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":-0.3625,"movimento":"desceu","melhor_rank":41,"pior_rank":73},{"nome_ies":"FNB","label":"FNB - FACULDADE NAZARENA DO BRASIL","sigla_ies":"FNB","categoria":"Privada sem fins lucrativos","anos_presentes":2,"participantes_total":27,"principal":false,"years":{"2014":{"score":1.9344776726968305,"rank":47,"total":85,"percentil":0.45238095238095233,"participantes":14,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":0.958,"rank":80,"total":87,"percentil":0.08139534883720934,"participantes":13,"tipo":"conceito_enade_continuo_ponderado"},"2021":null,"2025":null},"delta_serie":-0.371,"movimento":"desceu","melhor_rank":47,"pior_rank":80},{"nome_ies":"UNIFACCAMP","label":"UNIFACCAMP - Centro Universitário Campo Limpo Paulista","sigla_ies":"UNIFACCAMP","categoria":"Privada com fins lucrativos","anos_presentes":2,"participantes_total":51,"principal":false,"years":{"2014":null,"2017":{"score":1.6184,"rank":57,"total":87,"percentil":0.34883720930232553,"participantes":40,"tipo":"conceito_enade_continuo_ponderado"},"2021":{"score":1.869,"rank":52,"total":84,"percentil":0.3855421686746988,"participantes":11,"tipo":"conceito_enade_continuo_ponderado"},"2025":null},"delta_serie":0.0367,"movimento":"estavel","melhor_rank":52,"pior_rank":57},{"nome_ies":"FPA","label":"FPA - FACULDADE PAULISTA DE ARTES","sigla_ies":"FPA","categoria":"Privada sem fins lucrativos","anos_presentes":2,"participantes_total":28,"principal":false,"years":{"2014":{"score":1.06112726386197,"rank":75,"total":85,"percentil":0.11904761904761907,"participantes":21,"tipo":"conceito_enade_continuo_ponderado"},"2017":null,"2021":{"score":1.716,"rank":57,"total":84,"percentil":0.32530120481927716,"participantes":6,"tipo":"conceito_enade_continuo_ponderado"},"2025":null},"delta_serie":0.2063,"movimento":"subiu","melhor_rank":57,"pior_rank":75},{"nome_ies":"CBM/CEU","label":"CBM/CEU - CONSERVATÓRIO BRASILEIRO DE MÚSICA - CENTRO UNIVERSITÁRIO","sigla_ies":"CBM/CEU","categoria":"Privada sem fins lucrativos","anos_presentes":2,"participantes_total":81,"principal":false,"years":{"2014":{"score":1.66578663611694,"rank":59,"total":85,"percentil":0.30952380952380953,"participantes":28,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":1.4996,"rank":62,"total":87,"percentil":0.2906976744186046,"participantes":53,"tipo":"conceito_enade_continuo_ponderado"},"2021":null,"2025":null},"delta_serie":-0.0188,"movimento":"estavel","melhor_rank":59,"pior_rank":62},{"nome_ies":"UNINTER","label":"UNINTER - CENTRO UNIVERSITÁRIO INTERNACIONAL","sigla_ies":"UNINTER","categoria":"Privada com fins lucrativos","anos_presentes":2,"participantes_total":503,"principal":false,"years":{"2014":null,"2017":null,"2021":{"score":1.411,"rank":65,"total":84,"percentil":0.22891566265060237,"participantes":138,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.323,"rank":60,"total":88,"percentil":0.32183908045977017,"participantes":365,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.0929,"movimento":"estavel","melhor_rank":60,"pior_rank":65},{"nome_ies":"CBM-UNICBE","label":"CBM-UniCBE - CONSERVATÓRIO BRASILEIRO DE MÚSICA - CENTRO UNIVERSITÁRIO BRASILEIRO DE EDUCAÇÃO","sigla_ies":"CBM-UniCBE","categoria":"Privada sem fins lucrativos","anos_presentes":2,"participantes_total":60,"principal":false,"years":{"2014":null,"2017":null,"2021":{"score":1.517,"rank":63,"total":84,"percentil":0.2530120481927711,"participantes":53,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.286,"rank":64,"total":88,"percentil":0.27586206896551724,"participantes":7,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.0229,"movimento":"estavel","melhor_rank":63,"pior_rank":64},{"nome_ies":"CEUNIH","label":"CEUNIH - CENTRO UNIVERSITÁRIO METODISTA IZABELA HENDRIX","sigla_ies":"CEUNIH","categoria":"Privada sem fins lucrativos","anos_presentes":2,"participantes_total":49,"principal":false,"years":{"2014":{"score":1.00033311290087,"rank":76,"total":85,"percentil":0.1071428571428571,"participantes":18,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":1.3451,"rank":69,"total":87,"percentil":0.2093023255813954,"participantes":31,"tipo":"conceito_enade_continuo_ponderado"},"2021":null,"2025":null},"delta_serie":0.1022,"movimento":"estavel","melhor_rank":69,"pior_rank":76},{"nome_ies":"FASC","label":"FASC - FACULDADE SANTA CECÍLIA","sigla_ies":"FASC","categoria":"Privada sem fins lucrativos","anos_presentes":2,"participantes_total":29,"principal":false,"years":{"2014":{"score":1.12291271031269,"rank":71,"total":85,"percentil":0.16666666666666663,"participantes":17,"tipo":"conceito_enade_continuo_ponderado"},"2017":{"score":1.0513,"rank":74,"total":87,"percentil":0.15116279069767447,"participantes":12,"tipo":"conceito_enade_continuo_ponderado"},"2021":null,"2025":null},"delta_serie":-0.0155,"movimento":"estavel","melhor_rank":71,"pior_rank":74},{"nome_ies":"UNIASSELVI","label":"UNIASSELVI - CENTRO UNIVERSITÁRIO LEONARDO DA VINCI","sigla_ies":"UNIASSELVI","categoria":"Privada com fins lucrativos","anos_presentes":2,"participantes_total":235,"principal":false,"years":{"2014":null,"2017":null,"2021":{"score":0.981,"rank":76,"total":84,"percentil":0.09638554216867468,"participantes":15,"tipo":"conceito_enade_continuo_ponderado"},"2025":{"score":0.205,"rank":77,"total":88,"percentil":0.12643678160919536,"participantes":220,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":0.0301,"movimento":"estavel","melhor_rank":76,"pior_rank":77},{"nome_ies":"ETEP","label":"CENTRO UNIVERSITÁRIO ETEP","sigla_ies":"ETEP","categoria":"Privada com fins lucrativos","anos_presentes":1,"participantes_total":2,"principal":false,"years":{"2014":null,"2017":null,"2021":null,"2025":{"score":0.5,"rank":26,"total":88,"percentil":0.7126436781609196,"participantes":2,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":null,"movimento":"sem serie","melhor_rank":26,"pior_rank":26},{"nome_ies":"FADYC","label":"FADYC - FACULDADE DYNAMUS DE CAMPINAS","sigla_ies":"FADYC","categoria":"Privada com fins lucrativos","anos_presentes":1,"participantes_total":2,"principal":false,"years":{"2014":null,"2017":null,"2021":null,"2025":{"score":0.5,"rank":26,"total":88,"percentil":0.7126436781609196,"participantes":2,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":null,"movimento":"sem serie","melhor_rank":26,"pior_rank":26},{"nome_ies":"UFRB","label":"UFRB - UNIVERSIDADE FEDERAL DO RECÔNCAVO DA BAHIA","sigla_ies":"UFRB","categoria":"Pública Federal","anos_presentes":1,"participantes_total":33,"principal":false,"years":{"2014":null,"2017":null,"2021":null,"2025":{"score":0.4847272727272727,"rank":36,"total":88,"percentil":0.5977011494252873,"participantes":33,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":null,"movimento":"sem serie","melhor_rank":36,"pior_rank":36},{"nome_ies":"IF FLUMINENSE","label":"IF Fluminense - INSTITUTO FEDERAL DE EDUCAÇÃO, CIÊNCIA E TECNOLOGIA FLUMINENSE","sigla_ies":"IF Fluminense","categoria":"Pública Federal","anos_presentes":1,"participantes_total":36,"principal":false,"years":{"2014":null,"2017":null,"2021":{"score":2.069,"rank":40,"total":84,"percentil":0.5301204819277108,"participantes":36,"tipo":"conceito_enade_continuo_ponderado"},"2025":null},"delta_serie":null,"movimento":"sem serie","melhor_rank":40,"pior_rank":40},{"nome_ies":"IFCE","label":"IFCE","sigla_ies":"IFCE","categoria":"Pública Federal","anos_presentes":1,"participantes_total":41,"principal":false,"years":{"2014":null,"2017":null,"2021":null,"2025":{"score":0.4145853658536584,"rank":47,"total":88,"percentil":0.47126436781609193,"participantes":41,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":null,"movimento":"sem serie","melhor_rank":47,"pior_rank":47},{"nome_ies":"UNC","label":"UNC - UNIVERSIDADE DO CONTESTADO","sigla_ies":"UNC","categoria":"Privada sem fins lucrativos","anos_presentes":1,"participantes_total":11,"principal":false,"years":{"2014":{"score":1.88790413159516,"rank":49,"total":85,"percentil":0.4285714285714286,"participantes":11,"tipo":"conceito_enade_continuo_ponderado"},"2017":null,"2021":null,"2025":null},"delta_serie":null,"movimento":"sem serie","melhor_rank":49,"pior_rank":49},{"nome_ies":"CLARETIANO","label":"Claretiano - Centro Universitário","sigla_ies":"CLARETIANO","categoria":"Comunitária/ Confessional","anos_presentes":1,"participantes_total":135,"principal":false,"years":{"2014":null,"2017":null,"2021":null,"2025":{"score":0.407,"rank":50,"total":88,"percentil":0.4367816091954023,"participantes":135,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":null,"movimento":"sem serie","melhor_rank":50,"pior_rank":50},{"nome_ies":"CEUCLAR","label":"CEUCLAR - CENTRO UNIVERSITÁRIO CLARETIANO","sigla_ies":"CEUCLAR","categoria":"Privada sem fins lucrativos","anos_presentes":1,"participantes_total":349,"principal":false,"years":{"2014":null,"2017":{"score":1.8282,"rank":51,"total":87,"percentil":0.41860465116279066,"participantes":349,"tipo":"conceito_enade_continuo_ponderado"},"2021":null,"2025":null},"delta_serie":null,"movimento":"sem serie","melhor_rank":51,"pior_rank":51},{"nome_ies":"CLARETIANOBT","label":"CLARETIANOBT - Claretiano - Centro Universitário","sigla_ies":"CLARETIANOBT","categoria":"Privada sem fins lucrativos","anos_presentes":1,"participantes_total":693,"principal":false,"years":{"2014":null,"2017":null,"2021":{"score":1.729,"rank":55,"total":84,"percentil":0.3493975903614458,"participantes":693,"tipo":"conceito_enade_continuo_ponderado"},"2025":null},"delta_serie":null,"movimento":"sem serie","melhor_rank":55,"pior_rank":55},{"nome_ies":"CENTRO UNIVERSITÁRIO VALE DO RIO VERDE","label":"Centro Universitário Vale do Rio Verde","sigla_ies":"","categoria":"Privada sem fins lucrativos","anos_presentes":1,"participantes_total":45,"principal":false,"years":{"2014":null,"2017":null,"2021":{"score":1.69,"rank":59,"total":84,"percentil":0.3012048192771084,"participantes":45,"tipo":"conceito_enade_continuo_ponderado"},"2025":null},"delta_serie":null,"movimento":"sem serie","melhor_rank":59,"pior_rank":59},{"nome_ies":"UBM","label":"UBM - CENTRO UNIVERSITÁRIO DE BARRA MANSA","sigla_ies":"UBM","categoria":"Privada sem fins lucrativos","anos_presentes":1,"participantes_total":15,"principal":false,"years":{"2014":null,"2017":{"score":1.5322,"rank":59,"total":87,"percentil":0.32558139534883723,"participantes":15,"tipo":"conceito_enade_continuo_ponderado"},"2021":null,"2025":null},"delta_serie":null,"movimento":"sem serie","melhor_rank":59,"pior_rank":59},{"nome_ies":"FACCAMP","label":"FACCAMP - FACULDADE CAMPO LIMPO PAULISTA","sigla_ies":"FACCAMP","categoria":"Privada com fins lucrativos","anos_presentes":1,"participantes_total":28,"principal":false,"years":{"2014":{"score":1.55985885586614,"rank":62,"total":85,"percentil":0.27380952380952384,"participantes":28,"tipo":"conceito_enade_continuo_ponderado"},"2017":null,"2021":null,"2025":null},"delta_serie":null,"movimento":"sem serie","melhor_rank":62,"pior_rank":62},{"nome_ies":"IFSERTÃO-PE","label":"IFSERTÃO-PE - IF SERTÃO-PE","sigla_ies":"IFSERTÃO-PE","categoria":"Pública Federal","anos_presentes":1,"participantes_total":15,"principal":false,"years":{"2014":null,"2017":null,"2021":null,"2025":{"score":0.267,"rank":67,"total":88,"percentil":0.24137931034482762,"participantes":15,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":null,"movimento":"sem serie","melhor_rank":67,"pior_rank":67},{"nome_ies":"FACULDADE ANHANGUERA DE CASCAVEL","label":"FACULDADE ANHANGUERA DE CASCAVEL","sigla_ies":"","categoria":"Privada com fins lucrativos","anos_presentes":1,"participantes_total":20,"principal":false,"years":{"2014":{"score":1.15782298956245,"rank":69,"total":85,"percentil":0.19047619047619047,"participantes":20,"tipo":"conceito_enade_continuo_ponderado"},"2017":null,"2021":null,"2025":null},"delta_serie":null,"movimento":"sem serie","melhor_rank":69,"pior_rank":69},{"nome_ies":"FAMOSP","label":"FAMOSP - FACULDADE MOZARTEUM DE SÃO PAULO","sigla_ies":"FAMOSP","categoria":"Privada sem fins lucrativos","anos_presentes":1,"participantes_total":5,"principal":false,"years":{"2014":{"score":1.07311185684517,"rank":73,"total":85,"percentil":0.1428571428571429,"participantes":5,"tipo":"conceito_enade_continuo_ponderado"},"2017":null,"2021":null,"2025":null},"delta_serie":null,"movimento":"sem serie","melhor_rank":73,"pior_rank":73},{"nome_ies":"IFF","label":"IFF - IF FLUMINENSE","sigla_ies":"IFF","categoria":"Pública Federal","anos_presentes":1,"participantes_total":22,"principal":false,"years":{"2014":null,"2017":null,"2021":null,"2025":{"score":0.2269999999999999,"rank":74,"total":88,"percentil":0.16091954022988508,"participantes":22,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":null,"movimento":"sem serie","melhor_rank":74,"pior_rank":74},{"nome_ies":"UNITAU","label":"UNITAU - UNIVERSIDADE DE TAUBATÉ","sigla_ies":"UNITAU","categoria":"Pública Municipal","anos_presentes":1,"participantes_total":6,"principal":false,"years":{"2014":null,"2017":null,"2021":null,"2025":{"score":0.2,"rank":78,"total":88,"percentil":0.11494252873563215,"participantes":5,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":null,"movimento":"sem serie","melhor_rank":78,"pior_rank":78},{"nome_ies":"UFT","label":"UFT - UNIVERSIDADE FEDERAL DO TOCANTINS","sigla_ies":"UFT","categoria":"Pública Federal","anos_presentes":1,"participantes_total":11,"principal":false,"years":{"2014":null,"2017":null,"2021":null,"2025":{"score":0.1819999999999999,"rank":79,"total":88,"percentil":0.10344827586206895,"participantes":11,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":null,"movimento":"sem serie","melhor_rank":79,"pior_rank":79},{"nome_ies":"FACESA","label":"FACESA - FACULDADE EVANGÉLICA DE SALVADOR","sigla_ies":"FACESA","categoria":"Privada sem fins lucrativos","anos_presentes":1,"participantes_total":43,"principal":false,"years":{"2014":{"score":0.613203745754141,"rank":81,"total":85,"percentil":0.04761904761904767,"participantes":43,"tipo":"conceito_enade_continuo_ponderado"},"2017":null,"2021":null,"2025":null},"delta_serie":null,"movimento":"sem serie","melhor_rank":81,"pior_rank":81},{"nome_ies":"IBEC","label":"IBEC - INSTITUTO BRASILEIRO DE EDUCACAO SUPERIOR CONTINUADA","sigla_ies":"IBEC","categoria":"Privada sem fins lucrativos","anos_presentes":1,"participantes_total":13,"principal":false,"years":{"2014":null,"2017":{"score":0.8417,"rank":81,"total":87,"percentil":0.06976744186046513,"participantes":13,"tipo":"conceito_enade_continuo_ponderado"},"2021":null,"2025":null},"delta_serie":null,"movimento":"sem serie","melhor_rank":81,"pior_rank":81},{"nome_ies":"UNIFAVENI","label":"UNIFAVENI - CENTRO UNIVERSITÁRIO FAVENI","sigla_ies":"UNIFAVENI","categoria":"Privada com fins lucrativos","anos_presentes":1,"participantes_total":33,"principal":false,"years":{"2014":null,"2017":null,"2021":null,"2025":{"score":0.061,"rank":82,"total":88,"percentil":0.06896551724137934,"participantes":33,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":null,"movimento":"sem serie","melhor_rank":82,"pior_rank":82},{"nome_ies":"CEUNSP","label":"CEUNSP - CENTRO UNIVERSITÁRIO NOSSA SENHORA DO PATROCÍNIO","sigla_ies":"CEUNSP","categoria":"Privada com fins lucrativos","anos_presentes":1,"participantes_total":14,"principal":false,"years":{"2014":null,"2017":{"score":0.7877,"rank":83,"total":87,"percentil":0.046511627906976716,"participantes":14,"tipo":"conceito_enade_continuo_ponderado"},"2021":null,"2025":null},"delta_serie":null,"movimento":"sem serie","melhor_rank":83,"pior_rank":83},{"nome_ies":"UNEB","label":"UNEB - UNIVERSIDADE DO ESTADO DA BAHIA","sigla_ies":"UNEB","categoria":"Pública Estadual","anos_presentes":1,"participantes_total":2,"principal":false,"years":{"2014":null,"2017":null,"2021":null,"2025":{"score":0.0,"rank":83,"total":88,"percentil":0.05747126436781613,"participantes":2,"tipo":"percentual_acima_basico_ponderado"}},"delta_serie":null,"movimento":"sem serie","melhor_rank":83,"pior_rank":83},{"nome_ies":"FASEM","label":"FASEM - FACULDADE SERRA DA MESA","sigla_ies":"FASEM","categoria":"Privada com fins lucrativos","anos_presentes":1,"participantes_total":16,"principal":false,"years":{"2014":{"score":0.551036065759446,"rank":84,"total":85,"percentil":0.011904761904761862,"participantes":15,"tipo":"conceito_enade_continuo_ponderado"},"2017":null,"2021":null,"2025":null},"delta_serie":null,"movimento":"sem serie","melhor_rank":84,"pior_rank":84},{"nome_ies":"IESAP","label":"IESAP - INSTITUTO DE ENSINO SUPERIOR DO AMAPÁ","sigla_ies":"IESAP","categoria":"Privada com fins lucrativos","anos_presentes":1,"participantes_total":26,"principal":false,"years":{"2014":null,"2017":null,"2021":{"score":0.0,"rank":84,"total":84,"percentil":0.0,"participantes":26,"tipo":"conceito_enade_continuo_ponderado"},"2025":null},"delta_serie":null,"movimento":"sem serie","melhor_rank":84,"pior_rank":84},{"nome_ies":"UNIÍTALO","label":"UNIÍTALO - Centro Universitário Católico Ítalo Brasileiro","sigla_ies":"UNIÍTALO","categoria":"Privada sem fins lucrativos","anos_presentes":0,"participantes_total":1,"principal":false,"years":{"2014":null,"2017":null,"2021":null,"2025":null},"delta_serie":null,"movimento":"sem serie","melhor_rank":null,"pior_rank":null}],"intervals":[{"intervalo":"2014-2017","subiu":19,"estavel":32,"desceu":25,"n":76,"delta_mediano":-0.0195},{"intervalo":"2017-2021","subiu":17,"estavel":31,"desceu":23,"n":71,"delta_mediano":-0.0228},{"intervalo":"2021-2025","subiu":19,"estavel":34,"desceu":18,"n":71,"delta_mediano":0.0226}],"flows":[{"intervalo":"2014-2017","origem":"Q1 topo","destino":"Q1 topo","n":12},{"intervalo":"2014-2017","origem":"Q1 topo","destino":"Q2 alto","n":6},{"intervalo":"2014-2017","origem":"Q1 topo","destino":"Q3 baixo","n":3},{"intervalo":"2014-2017","origem":"Q2 alto","destino":"Q1 topo","n":4},{"intervalo":"2014-2017","origem":"Q2 alto","destino":"Q2 alto","n":7},{"intervalo":"2014-2017","origem":"Q2 alto","destino":"Q3 baixo","n":5},{"intervalo":"2014-2017","origem":"Q2 alto","destino":"Q4 base","n":4},{"intervalo":"2014-2017","origem":"Q3 baixo","destino":"Q1 topo","n":3},{"intervalo":"2014-2017","origem":"Q3 baixo","destino":"Q2 alto","n":5},{"intervalo":"2014-2017","origem":"Q3 baixo","destino":"Q3 baixo","n":5},{"intervalo":"2014-2017","origem":"Q3 baixo","destino":"Q4 base","n":6},{"intervalo":"2014-2017","origem":"Q4 base","destino":"Q1 topo","n":1},{"intervalo":"2014-2017","origem":"Q4 base","destino":"Q2 alto","n":2},{"intervalo":"2014-2017","origem":"Q4 base","destino":"Q3 baixo","n":4},{"intervalo":"2014-2017","origem":"Q4 base","destino":"Q4 base","n":9},{"intervalo":"2017-2021","origem":"Q1 topo","destino":"Q1 topo","n":13},{"intervalo":"2017-2021","origem":"Q1 topo","destino":"Q2 alto","n":4},{"intervalo":"2017-2021","origem":"Q1 topo","destino":"Q3 baixo","n":3},{"intervalo":"2017-2021","origem":"Q1 topo","destino":"Q4 base","n":1},{"intervalo":"2017-2021","origem":"Q2 alto","destino":"Q1 topo","n":3},{"intervalo":"2017-2021","origem":"Q2 alto","destino":"Q2 alto","n":6},{"intervalo":"2017-2021","origem":"Q2 alto","destino":"Q3 baixo","n":7},{"intervalo":"2017-2021","origem":"Q2 alto","destino":"Q4 base","n":3},{"intervalo":"2017-2021","origem":"Q3 baixo","destino":"Q1 topo","n":4},{"intervalo":"2017-2021","origem":"Q3 baixo","destino":"Q2 alto","n":3},{"intervalo":"2017-2021","origem":"Q3 baixo","destino":"Q3 baixo","n":5},{"intervalo":"2017-2021","origem":"Q3 baixo","destino":"Q4 base","n":5},{"intervalo":"2017-2021","origem":"Q4 base","destino":"Q1 topo","n":1},{"intervalo":"2017-2021","origem":"Q4 base","destino":"Q2 alto","n":4},{"intervalo":"2017-2021","origem":"Q4 base","destino":"Q3 baixo","n":1},{"intervalo":"2017-2021","origem":"Q4 base","destino":"Q4 base","n":8},{"intervalo":"2021-2025","origem":"Q1 topo","destino":"Q1 topo","n":12},{"intervalo":"2021-2025","origem":"Q1 topo","destino":"Q2 alto","n":5},{"intervalo":"2021-2025","origem":"Q1 topo","destino":"Q3 baixo","n":3},{"intervalo":"2021-2025","origem":"Q1 topo","destino":"Q4 base","n":1},{"intervalo":"2021-2025","origem":"Q2 alto","destino":"Q1 topo","n":3},{"intervalo":"2021-2025","origem":"Q2 alto","destino":"Q2 alto","n":7},{"intervalo":"2021-2025","origem":"Q2 alto","destino":"Q3 baixo","n":4},{"intervalo":"2021-2025","origem":"Q2 alto","destino":"Q4 base","n":2},{"intervalo":"2021-2025","origem":"Q3 baixo","destino":"Q1 topo","n":3},{"intervalo":"2021-2025","origem":"Q3 baixo","destino":"Q2 alto","n":4},{"intervalo":"2021-2025","origem":"Q3 baixo","destino":"Q3 baixo","n":6},{"intervalo":"2021-2025","origem":"Q3 baixo","destino":"Q4 base","n":3},{"intervalo":"2021-2025","origem":"Q4 base","destino":"Q1 topo","n":2},{"intervalo":"2021-2025","origem":"Q4 base","destino":"Q2 alto","n":3},{"intervalo":"2021-2025","origem":"Q4 base","destino":"Q3 baixo","n":7},{"intervalo":"2021-2025","origem":"Q4 base","destino":"Q4 base","n":6}],"gauthier":[{"ano":2006,"n":25,"saber_disciplinar":21,"saber_acao_pedagogica":2,"saber_tradicao_pedagogica":1,"saber_ciencias_educacao":1,"saber_curricular":0},{"ano":2009,"n":25,"saber_disciplinar":22,"saber_acao_pedagogica":0,"saber_tradicao_pedagogica":2,"saber_ciencias_educacao":1,"saber_curricular":0},{"ano":2011,"n":26,"saber_disciplinar":15,"saber_acao_pedagogica":8,"saber_tradicao_pedagogica":1,"saber_ciencias_educacao":1,"saber_curricular":1},{"ano":2014,"n":22,"saber_disciplinar":17,"saber_acao_pedagogica":1,"saber_tradicao_pedagogica":1,"saber_ciencias_educacao":3,"saber_curricular":0},{"ano":2017,"n":22,"saber_disciplinar":13,"saber_acao_pedagogica":5,"saber_tradicao_pedagogica":2,"saber_ciencias_educacao":2,"saber_curricular":0},{"ano":2021,"n":22,"saber_disciplinar":13,"saber_acao_pedagogica":3,"saber_tradicao_pedagogica":2,"saber_ciencias_educacao":4,"saber_curricular":0},{"ano":2024,"n":36,"saber_disciplinar":11,"saber_acao_pedagogica":19,"saber_tradicao_pedagogica":5,"saber_ciencias_educacao":1,"saber_curricular":0},{"ano":2025,"n":49,"saber_disciplinar":17,"saber_acao_pedagogica":21,"saber_tradicao_pedagogica":5,"saber_ciencias_educacao":5,"saber_curricular":1}],"gauthierCats":[{"key":"saber_disciplinar","label":"Disciplinar","desc":"Conhecimento musical: teoria, harmonia, historia, repertorio, analise, estetica.","color":"#2868a9"},{"key":"saber_acao_pedagogica","label":"Acao pedagogica","desc":"Saber docente validado por pesquisa: como ensinar, avaliar, planejar, mediar.","color":"#d68910"},{"key":"saber_tradicao_pedagogica","label":"Tradicao pedagogica","desc":"Metodos consagrados herdados: Dalcroze, Orff, Kodaly, Suzuki, Wuytack.","color":"#1e8449"},{"key":"saber_ciencias_educacao","label":"Ciencias da educacao","desc":"Sistema educacional, desenvolvimento humano, inclusao, relacao lei-pratica.","color":"#7d3c98"},{"key":"saber_curricular","label":"Curricular","desc":"Programas, normas, leis, diretrizes, BNCC, DCN, portarias oficiais.","color":"#c0392b"}],"generated":"2026-06-02"}</script>
+  <script>
+    const data = JSON.parse(document.getElementById('payload').textContent);
+    const anos = data.anos.map(String);
+    const selectedBump = new Set();
+    const pinnedHeatmap = new Set();
+    const state = {
+      search: '',
+      preset: 'all',
+      movement: 'all',
+      minYears: 1,
+      bumpSearch: '',
+      heatmapSearch: ''
+    };
+
+    const els = {
+      search: document.getElementById('search'),
+      preset: document.getElementById('preset'),
+      movement: document.getElementById('movement'),
+      minYears: document.getElementById('minYears'),
+      reset: document.getElementById('reset'),
+      filterSummary: document.getElementById('filterSummary'),
+      movementGrid: document.getElementById('movementGrid'),
+      heatmapBands: document.getElementById('heatmapBands'),
+      heatmap: document.getElementById('heatmap'),
+      rowCount: document.getElementById('rowCount'),
+      bumpChart: document.getElementById('bumpChart'),
+      bumpSearch: document.getElementById('bumpSearch'),
+      bumpChoices: document.getElementById('bumpChoices'),
+      bumpSelectionCount: document.getElementById('bumpSelectionCount'),
+      clearBump: document.getElementById('clearBump'),
+      heatmapSearch: document.getElementById('heatmapSearch'),
+      heatmapPins: document.getElementById('heatmapPins'),
+      flowGrid: document.getElementById('flowGrid')
+    };
+
+    function colorFor(p) {
+      if (p == null || Number.isNaN(p)) return '#eef0f3';
+      if (p >= .75) return '#cdebdc';
+      if (p >= .50) return '#dceec4';
+      if (p >= .25) return '#f3df9a';
+      return '#efc0b9';
+    }
+    function bandFor(p) {
+      if (p == null || Number.isNaN(p)) return { key: 'sem', label: 'Sem dado', range: '', color: '#eef0f3', icon: '—' };
+      if (p >= .75) return { key: 'topo', label: 'Q1 topo', range: '75% a 100%', color: '#cdebdc', icon: '▲▲' };
+      if (p >= .50) return { key: 'alto', label: 'Q2 alto', range: '50% a 74%', color: '#dceec4', icon: '▲' };
+      if (p >= .25) return { key: 'baixo', label: 'Q3 baixo', range: '25% a 49%', color: '#f3df9a', icon: '▼' };
+      return { key: 'base', label: 'Q4 base', range: '0% a 24%', color: '#efc0b9', icon: '▼▼' };
+    }
+    function strokeFor(i) {
+      const colors = ['#2868a9','#1f8a70','#b94e48','#7b5ea7','#c17624','#3d6f73','#915b39','#4b668f','#9b4d7a','#52683d'];
+      return colors[i % colors.length];
+    }
+    function fmtScore(y, v) {
+      if (!v) return '';
+      return y === '2025' ? (v.score * 100).toFixed(1) + '%' : v.score.toFixed(3);
+    }
+    function metricLabel(ano) {
+      return ano === '2025' ? 'acima do básico' : 'conceito contínuo';
+    }
+    function fmtReferenceScore(ano, score) {
+      if (score == null || Number.isNaN(score)) return '';
+      return ano === '2025' ? (score * 100).toFixed(1) + '%' : score.toFixed(3);
+    }
+    function deltaClass(row) {
+      return row.movimento === 'subiu' ? 'up' : row.movimento === 'desceu' ? 'down' : 'stable';
+    }
+    function deltaText(row) {
+      if (row.delta_serie == null) return 'sem serie';
+      const pct = Math.round(row.delta_serie * 100);
+      return (pct > 0 ? '+' : '') + pct + ' pontos';
+    }
+    function passesPreset(row) {
+      if (state.preset === 'all') return true;
+      if (state.preset === 'main') return row.principal || row.anos_presentes >= 4 || (row.melhor_rank && row.melhor_rank <= 15);
+      if (state.preset === 'complete') return row.anos_presentes >= 3;
+      if (state.preset === 'top') return row.melhor_rank && row.melhor_rank <= 20;
+      if (state.preset === 'unipampa') {
+        const siglas = ['UNIPAMPA','UFPEL','UFSM','UFRGS','UDESC','UCS','UNIPAMPA'];
+        return siglas.some(s => (row.label + ' ' + row.sigla_ies).toUpperCase().includes(s));
+      }
+      return true;
+    }
+    function filteredRows() {
+      const q = state.search.trim().toUpperCase();
+      return data.rows.filter(row => {
+        if (row.anos_presentes < state.minYears) return false;
+        if (state.movement !== 'all' && row.movimento !== state.movement) return false;
+        if (!passesPreset(row)) return false;
+        if (q && !(row.label + ' ' + row.sigla_ies + ' ' + row.categoria).toUpperCase().includes(q)) return false;
+        return true;
+      });
+    }
+    function filteredRowsWithoutMinYears() {
+      const q = state.search.trim().toUpperCase();
+      return data.rows.filter(row => {
+        if (state.movement !== 'all' && row.movimento !== state.movement) return false;
+        if (!passesPreset(row)) return false;
+        if (q && !(row.label + ' ' + row.sigla_ies + ' ' + row.categoria).toUpperCase().includes(q)) return false;
+        return true;
+      });
+    }
+    function renderFilterSummary(rows) {
+      const candidates = filteredRowsWithoutMinYears();
+      const hiddenByMinYears = candidates.filter(row => row.anos_presentes < state.minYears);
+      const hiddenTotal = data.rows.length - rows.length;
+      const uspVisible = rows.some(row => row.sigla_ies === 'USP');
+      const uspHiddenByMinYears = hiddenByMinYears.some(row => row.sigla_ies === 'USP');
+      const examples = hiddenByMinYears.slice(0, 6).map(row => escapeHtml(row.sigla_ies || row.label)).join(', ');
+      let text = `<strong>${rows.length}</strong> IES exibidas de um total de <strong>${data.rows.length}</strong>.`;
+      if (hiddenTotal > 0) {
+        text += ` <strong>${hiddenTotal}</strong> estao fora do recorte atual.`;
+      }
+      if (hiddenByMinYears.length > 0) {
+        text += ` O filtro <strong>Min. anos = ${state.minYears}</strong> esconde <strong>${hiddenByMinYears.length}</strong> IES com serie mais curta.`;
+        if (examples) {
+          text += ` Exemplos: ${examples}.`;
+        }
+      }
+      if (!uspVisible && uspHiddenByMinYears) {
+        text += ` <strong>A USP esta na base, mas fica oculta aqui porque so aparece em 2025.</strong>`;
+      }
+      els.filterSummary.innerHTML = text;
+    }
+    function renderMovementGrid() {
+      els.movementGrid.innerHTML = data.intervals.map(item => {
+        const total = Math.max(item.n, 1);
+        const up = item.subiu / total * 100;
+        const stable = item.estavel / total * 100;
+        const down = item.desceu / total * 100;
+        const med = item.delta_mediano == null ? 'sem mediana' : `${Math.round(item.delta_mediano * 100)} pontos na mediana`;
+        return `
+          <div class="movement">
+            <h3>${item.intervalo}</h3>
+            <div class="bar" title="${item.n} IES comparaveis">
+              <div class="seg up" style="width:${up}%"></div>
+              <div class="seg stable" style="width:${stable}%"></div>
+              <div class="seg down" style="width:${down}%"></div>
+            </div>
+            <div class="legend">
+              <span><i class="dot" style="background:var(--top)"></i>${item.subiu} subiram</span>
+              <span><i class="dot" style="background:var(--mid)"></i>${item.estavel} estaveis</span>
+              <span><i class="dot" style="background:var(--base)"></i>${item.desceu} desceram</span>
+              <span>${med}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+    function sparkline(row) {
+      const pts = anos.map((ano, i) => {
+        const y = row.years[ano];
+        if (!y) return null;
+        return [12 + i * 42, 32 - y.percentil * 26];
+      }).filter(Boolean);
+      if (pts.length < 2) return '<span class="small">sem serie</span>';
+      const d = pts.map((p, i) => `${i ? 'L' : 'M'}${p[0]},${p[1]}`).join(' ');
+      const circles = pts.map(p => `<circle cx="${p[0]}" cy="${p[1]}" r="2.6"></circle>`).join('');
+      return `<svg viewBox="0 0 150 38" aria-hidden="true"><path d="${d}" fill="none" stroke="#2868a9" stroke-width="2"></path><g fill="#17202a">${circles}</g></svg>`;
+    }
+    function renderTable(rows) {
+      const q = state.heatmapSearch.trim().toUpperCase();
+      const matches = rows.filter(row => {
+        if (!q) return true;
+        return (row.label + ' ' + row.sigla_ies + ' ' + row.categoria).toUpperCase().includes(q);
+      });
+      const pinnedRows = rows.filter(row => pinnedHeatmap.has(row.nome_ies));
+      const visibleMap = new Map();
+      [...pinnedRows, ...matches].forEach(row => visibleMap.set(row.nome_ies, row));
+      const visibleRows = [...visibleMap.values()].sort((a, b) => {
+        const ap = pinnedHeatmap.has(a.nome_ies) ? 0 : 1;
+        const bp = pinnedHeatmap.has(b.nome_ies) ? 0 : 1;
+        if (ap !== bp) return ap - bp;
+        return a.label.localeCompare(b.label);
+      });
+      const pinnedVisible = visibleRows.filter(row => pinnedHeatmap.has(row.nome_ies)).length;
+      els.rowCount.textContent = `${visibleRows.length} IES exibidas` + (pinnedVisible ? `, sendo ${pinnedVisible} fixadas no topo` : '');
+      els.heatmap.querySelector('thead').innerHTML = `
+        <tr>
+          <th class="name-head" scope="col">IES</th>
+          <th scope="col">Serie</th>
+          ${anos.map(y => `<th scope="col">${y}</th>`).join('')}
+          <th scope="col">Movimento</th>
+          <th scope="col">Anos</th>
+          <th scope="col">Total part.</th>
+        </tr>
+      `;
+      els.heatmap.querySelector('tbody').innerHTML = visibleRows.map(row => {
+        const cells = anos.map(ano => {
+          const y = row.years[ano];
+          if (!y) return '<td><div class="cell"><span class="small">sem dado</span></div></td>';
+          const p = Math.round(y.percentil * 100);
+          const title = `${row.label} em ${ano}: posição ${y.rank} de ${y.total}; posição relativa ${p}%; ${metricLabel(ano)} ${fmtScore(ano, y)}; ${y.participantes} participantes.`;
+          const band = bandFor(y.percentil);
+          return `<td><div class="cell" style="background:${colorFor(y.percentil)};" title="${escapeHtml(title)}"><strong><span aria-hidden="true">${band.icon}</span> ${y.rank}º de ${y.total}</strong><span class="small">posição relativa: ${p}%</span><span class="small">valor: ${metricLabel(ano)} ${fmtScore(ano, y)}</span><span class="small">n = ${y.participantes}</span></div></td>`;
+        }).join('');
+        const pinActive = pinnedHeatmap.has(row.nome_ies) ? ' active' : '';
+        const pinLabel = pinnedHeatmap.has(row.nome_ies) ? 'Desafixar' : 'Fixar';
+        return `
+          <tr>
+            <td class="name"><strong>${escapeHtml(row.sigla_ies || row.label)}</strong><br><span class="small">${escapeHtml(row.label)}<br>${escapeHtml(row.categoria)}</span><button type="button" class="pin-button${pinActive}" data-heatmap-pin="${encodeURIComponent(row.nome_ies)}" aria-label="${pinLabel} ${escapeHtml(row.sigla_ies || row.label)} no topo do heatmap">${pinLabel}</button></td>
+            <td class="spark">${sparkline(row)}</td>
+            ${cells}
+            <td><span class="delta ${deltaClass(row)}">${deltaText(row)}</span><br><span class="small">${row.movimento}</span></td>
+            <td>${row.anos_presentes}</td>
+            <td>${row.participantes_total}</td>
+          </tr>
+        `;
+      }).join('');
+      els.heatmapPins.innerHTML = pinnedRows.length
+        ? pinnedRows
+            .sort((a, b) => a.label.localeCompare(b.label))
+            .map(row => `<button type="button" class="pin-chip" data-heatmap-pin="${encodeURIComponent(row.nome_ies)}" aria-label="Desafixar ${escapeHtml(row.sigla_ies || row.label)}"><strong>Fixada:</strong> ${escapeHtml(row.sigla_ies || row.label)} x</button>`)
+            .join('')
+        : '<span class="note">Nenhuma IES fixada no heatmap. Use o botao "Fixar" na linha para comparar cursos.</span>';
+    }
+    function renderHeatmapBands(rows) {
+      const bands = [
+        { key: 'topo', label: 'Verde', range: '75% a 100%', expl: 'Bloco mais alto do ranking relativo no ano.' },
+        { key: 'alto', label: 'Verde-claro', range: '50% a 74%', expl: 'Metade superior, mas fora do topo imediato.' },
+        { key: 'baixo', label: 'Amarelo', range: '25% a 49%', expl: 'Metade inferior, mas acima da base.' },
+        { key: 'base', label: 'Vermelho-claro', range: '0% a 24%', expl: 'Bloco mais baixo do ranking relativo no ano.' },
+      ];
+      const currentYear = anos[anos.length - 1];
+      const grouped = Object.fromEntries(bands.map(b => [b.key, []]));
+      rows.forEach(row => {
+        const validYears = anos.map(ano => row.years[ano]).filter(Boolean);
+        const y = row.years[currentYear] || validYears[validYears.length - 1];
+        if (!y) return;
+        const band = bandFor(y.percentil);
+        if (grouped[band.key]) grouped[band.key].push(row);
+      });
+      const bandIcons = { topo: '▲▲', alto: '▲', baixo: '▼', base: '▼▼' };
+      els.heatmapBands.innerHTML = bands.map(band => {
+        const items = (grouped[band.key] || []).sort((a, b) => {
+          const ay = a.years[currentYear] || anos.map(ano => a.years[ano]).filter(Boolean).slice(-1)[0];
+          const by = b.years[currentYear] || anos.map(ano => b.years[ano]).filter(Boolean).slice(-1)[0];
+          return (ay?.rank || 999) - (by?.rank || 999);
+        });
+        const examples = items.slice(0, 4).map(row => escapeHtml(row.sigla_ies || row.label)).join(', ');
+        return `
+          <div class="band-card">
+            <div class="band-swatch" style="background:${bandFor({topo: .9, alto: .6, baixo: .35, base: .1}[band.key]).color}"></div>
+            <strong>${bandIcons[band.key] || ''} ${band.label}</strong>
+            <span class="small">${band.range}</span>
+            <span class="small">${band.expl}</span>
+            <span class="small"><strong>${items.length}</strong> IES do recorte atual entram aqui.</span>
+            <span class="small">${examples ? 'Exemplos: ' + examples : 'Sem IES nesta faixa no recorte atual.'}</span>
+          </div>
+        `;
+      }).join('');
+    }
+    function referenceSeries(kind) {
+      return anos.map((ano, i) => {
+        const vals = data.rows
+          .map(row => row.years[ano] ? row.years[ano].score : null)
+          .filter(v => v != null && !Number.isNaN(v))
+          .sort((a, b) => a - b);
+        if (!vals.length) return null;
+        const score = kind === 'media'
+          ? vals.reduce((acc, v) => acc + v, 0) / vals.length
+          : vals.length % 2
+            ? vals[Math.floor(vals.length / 2)]
+            : (vals[vals.length / 2 - 1] + vals[vals.length / 2]) / 2;
+        const below = vals.filter(v => v <= score).length;
+        const percentil = vals.length <= 1 ? .5 : Math.max(0, Math.min(1, (below - 0.5) / vals.length));
+        return { ano, xIndex: i, score, percentil };
+      }).filter(Boolean);
+    }
+    function bumpCandidates(rows) {
+      return rows
+        .filter(row => row.anos_presentes >= 1)
+        .slice()
+        .sort((a, b) => {
+          if (a.principal !== b.principal) return a.principal ? -1 : 1;
+          if (a.anos_presentes !== b.anos_presentes) return b.anos_presentes - a.anos_presentes;
+          const ar = a.melhor_rank ?? 999;
+          const br = b.melhor_rank ?? 999;
+          if (ar !== br) return ar - br;
+          return a.label.localeCompare(b.label);
+        });
+    }
+    function renderBumpControls(rows) {
+      const candidates = bumpCandidates(rows);
+      const visibleSelected = candidates.filter(row => selectedBump.has(row.nome_ies)).length;
+      els.bumpSelectionCount.textContent = `${visibleSelected} selecionada(s) no recorte atual. Média e mediana aparecem sempre.`;
+      els.clearBump.disabled = selectedBump.size === 0;
+      const q = state.bumpSearch.trim().toUpperCase();
+      const filteredCandidates = candidates.filter(row => {
+        if (!q) return true;
+        return (row.label + ' ' + row.sigla_ies + ' ' + row.categoria).toUpperCase().includes(q);
+      });
+      if (!filteredCandidates.length) {
+        els.bumpChoices.innerHTML = '<span class="note">Nenhuma IES com série suficiente neste recorte.</span>';
+        return;
+      }
+      els.bumpChoices.innerHTML = filteredCandidates.map(row => {
+        const selected = selectedBump.has(row.nome_ies) ? ' selected' : '';
+        const label = escapeHtml(row.sigla_ies || row.label);
+        const sub = row.anos_presentes >= 3 ? `${row.anos_presentes} anos` : '2 anos';
+        return `<button type="button" class="bump-chip${selected}" data-key="${encodeURIComponent(row.nome_ies)}" title="${escapeHtml(row.label)}" aria-label="${selected ? 'Remover' : 'Adicionar'} ${escapeHtml(row.label)} ao grafico" aria-pressed="${selected ? 'true' : 'false'}">${label}<span class="chip-sub">${sub}</span></button>`;
+      }).join('');
+    }
+    function renderBump(rows) {
+      renderBumpControls(rows);
+      const selected = bumpCandidates(rows).filter(row => selectedBump.has(row.nome_ies));
+      const svg = els.bumpChart;
+      const w = 980, h = 420, left = 120, right = 80, top = 28, bottom = 54;
+      const x = i => left + i * ((w - left - right) / (anos.length - 1));
+      const y = p => top + (1 - p) * (h - top - bottom);
+      let out = '';
+      anos.forEach((ano, i) => {
+        out += `<line x1="${x(i)}" y1="${top}" x2="${x(i)}" y2="${h-bottom}" stroke="#d9dee7"></line>`;
+        out += `<text x="${x(i)}" y="${h-22}" text-anchor="middle" font-size="13" fill="#364354">${ano}</text>`;
+      });
+      [0, .25, .5, .75, 1].forEach(p => {
+        out += `<line x1="${left}" y1="${y(p)}" x2="${w-right}" y2="${y(p)}" stroke="#edf0f4"></line>`;
+        const label = p === 1 ? '100% topo' : p === 0 ? '0% base' : `${Math.round(p*100)}%`;
+        out += `<text x="18" y="${y(p)+4}" font-size="11" fill="#5e6978">${label}</text>`;
+      });
+      const refs = [
+        { label: 'Média', color: '#17202a', dash: '', series: referenceSeries('media') },
+        { label: 'Mediana', color: '#7b5ea7', dash: '6 5', series: referenceSeries('mediana') }
+      ];
+      refs.forEach(ref => {
+        const pts = ref.series.map(p => [x(p.xIndex), y(p.percentil), p]);
+        if (pts.length < 2) return;
+        const d = pts.map((p, i) => `${i ? 'L' : 'M'}${p[0]},${p[1]}`).join(' ');
+        out += `<path d="${d}" fill="none" stroke="${ref.color}" stroke-width="2.2" stroke-dasharray="${ref.dash}" opacity=".78"></path>`;
+        pts.forEach(p => {
+          out += `<circle cx="${p[0]}" cy="${p[1]}" r="3.2" fill="#fff" stroke="${ref.color}" stroke-width="1.8"></circle>`;
+        });
+        const last = pts[pts.length - 1];
+        out += `<text x="${last[0]+8}" y="${last[1]-7}" font-size="11" fill="${ref.color}">${ref.label}</text>`;
+      });
+      selected.forEach((row, idx) => {
+        const pts = anos.map((ano, i) => {
+          const yr = row.years[ano];
+          return yr ? [x(i), y(yr.percentil), yr] : null;
+        }).filter(Boolean);
+        const color = strokeFor(idx);
+        if (pts.length >= 2) {
+          const d = pts.map((p, i) => `${i ? 'L' : 'M'}${p[0]},${p[1]}`).join(' ');
+          out += `<path d="${d}" fill="none" stroke="${color}" stroke-width="2.5" opacity=".9"></path>`;
+        }
+        pts.forEach(p => out += `<circle cx="${p[0]}" cy="${p[1]}" r="${pts.length === 1 ? 5.5 : 4}" fill="${color}"></circle>`);
+        const last = pts[pts.length - 1];
+        out += `<text x="${last[0]+8}" y="${last[1]+4}" font-size="11" fill="${color}">${escapeHtml(row.sigla_ies || row.label).slice(0, 18)}</text>`;
+      });
+      if (!selected.length) {
+        out += `<text x="${w / 2}" y="${top + 42}" text-anchor="middle" font-size="14" fill="#5e6978">Selecione universidades nos botões abaixo para desenhar as trajetórias.</text>`;
+      }
+      const mediaLabel = referenceSeries('media').map(p => `${p.ano} ${fmtReferenceScore(p.ano, p.score)}`).join(' | ');
+      const medianaLabel = referenceSeries('mediana').map(p => `${p.ano} ${fmtReferenceScore(p.ano, p.score)}`).join(' | ');
+      out += `<text x="${left}" y="${h-6}" font-size="11" fill="#17202a">Média: ${escapeHtml(mediaLabel)}</text>`;
+      out += `<text x="${left + 430}" y="${h-6}" font-size="11" fill="#7b5ea7">Mediana: ${escapeHtml(medianaLabel)}</text>`;
+      svg.innerHTML = out;
+    }
+    function renderFlow() {
+      const byInterval = Object.groupBy ? Object.groupBy(data.flows, x => x.intervalo) : data.flows.reduce((acc, x) => ((acc[x.intervalo] ||= []).push(x), acc), {});
+      els.flowGrid.innerHTML = Object.entries(byInterval).map(([intervalo, rows]) => {
+        rows.sort((a, b) => b.n - a.n);
+        return `
+          <div>
+            <h3 style="margin:0 0 8px;font-size:14px">${intervalo}</h3>
+            <table>
+              <thead><tr><th>Origem</th><th>Destino</th><th>n</th></tr></thead>
+              <tbody>${rows.slice(0, 8).map(r => `<tr><td>${r.origem}</td><td>${r.destino}</td><td>${r.n}</td></tr>`).join('')}</tbody>
+            </table>
+          </div>
+        `;
+      }).join('');
+    }
+    function escapeHtml(value) {
+      return String(value ?? '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
+    }
+    function renderGauthier() {
+      const cats = data.gauthierCats;
+      const items = data.gauthier;
+      const chart = document.getElementById('gauthierChart');
+      const legend = document.getElementById('gauthierLegend');
+      let html = '';
+      items.forEach(item => {
+        const n = item.n;
+        html += `<div class="gauthier-year">${item.ano}</div>`;
+        html += `<div class="gauthier-bar">`;
+        cats.forEach(cat => {
+          const count = item[cat.key] || 0;
+          const pct = (count / n * 100);
+          if (count > 0) {
+            const label = pct >= 12 ? `${Math.round(pct)}%` : '';
+            html += `<div class="gauthier-seg" style="width:${pct.toFixed(1)}%;background:${cat.color}" title="${cat.label}: ${count} de ${n} (${Math.round(pct)}%)"><span class="pct-label">${label}</span></div>`;
+          }
+        });
+        html += `</div>`;
+        html += `<div class="gauthier-n">n=${n}</div>`;
+      });
+      chart.innerHTML = html;
+
+      legend.innerHTML = cats.map(cat =>
+        `<div class="gauthier-legend-item"><span class="gauthier-legend-swatch" style="background:${cat.color}"></span><strong>${cat.label}</strong><br>${cat.desc}</div>`
+      ).join('');
+    }
+    renderGauthier();
+
+    function render() {
+      const rows = filteredRows();
+      renderFilterSummary(rows);
+      renderMovementGrid();
+      renderHeatmapBands(rows);
+      renderBump(rows);
+      renderTable(rows);
+      renderFlow();
+    }
+    els.search.addEventListener('input', e => { state.search = e.target.value; render(); });
+    els.preset.addEventListener('change', e => { state.preset = e.target.value; render(); });
+    els.movement.addEventListener('change', e => { state.movement = e.target.value; render(); });
+    els.minYears.addEventListener('change', e => { state.minYears = Number(e.target.value); render(); });
+    els.bumpSearch.addEventListener('input', e => { state.bumpSearch = e.target.value; render(); });
+    els.heatmapSearch.addEventListener('input', e => { state.heatmapSearch = e.target.value; render(); });
+    els.bumpChoices.addEventListener('click', e => {
+      const button = e.target.closest('button[data-key]');
+      if (!button) return;
+      const key = decodeURIComponent(button.dataset.key);
+      if (selectedBump.has(key)) selectedBump.delete(key);
+      else selectedBump.add(key);
+      render();
+    });
+    els.clearBump.addEventListener('click', () => {
+      selectedBump.clear();
+      render();
+    });
+    els.heatmap.addEventListener('click', e => {
+      const button = e.target.closest('button[data-heatmap-pin]');
+      if (!button) return;
+      const key = decodeURIComponent(button.dataset.heatmapPin);
+      if (pinnedHeatmap.has(key)) pinnedHeatmap.delete(key);
+      else pinnedHeatmap.add(key);
+      render();
+    });
+    els.heatmapPins.addEventListener('click', e => {
+      const button = e.target.closest('button[data-heatmap-pin]');
+      if (!button) return;
+      const key = decodeURIComponent(button.dataset.heatmapPin);
+      pinnedHeatmap.delete(key);
+      render();
+    });
+    els.reset.addEventListener('click', () => {
+      state.search = '';
+      state.preset = 'all';
+      state.movement = 'all';
+      state.minYears = 1;
+      state.bumpSearch = '';
+      state.heatmapSearch = '';
+      selectedBump.clear();
+      pinnedHeatmap.clear();
+      els.search.value = '';
+      els.preset.value = 'all';
+      els.movement.value = 'all';
+      els.minYears.value = '1';
+      els.bumpSearch.value = '';
+      els.heatmapSearch.value = '';
+      render();
+    });
+    function saveHash() {
+      const params = new URLSearchParams();
+      if (state.search) params.set('q', state.search);
+      if (state.preset !== 'all') params.set('preset', state.preset);
+      if (state.movement !== 'all') params.set('mov', state.movement);
+      if (state.minYears !== 1) params.set('min', String(state.minYears));
+      if (selectedBump.size) params.set('bump', [...selectedBump].map(encodeURIComponent).join(','));
+      if (pinnedHeatmap.size) params.set('pin', [...pinnedHeatmap].map(encodeURIComponent).join(','));
+      const h = params.toString();
+      history.replaceState(null, '', h ? '#' + h : location.pathname);
+    }
+    function loadHash() {
+      if (!location.hash) return;
+      try {
+        const params = new URLSearchParams(location.hash.slice(1));
+        if (params.has('q')) { state.search = params.get('q'); els.search.value = state.search; }
+        if (params.has('preset')) { state.preset = params.get('preset'); els.preset.value = state.preset; }
+        if (params.has('mov')) { state.movement = params.get('mov'); els.movement.value = state.movement; }
+        if (params.has('min')) { state.minYears = Number(params.get('min')); els.minYears.value = String(state.minYears); }
+        if (params.has('bump')) { params.get('bump').split(',').forEach(k => selectedBump.add(decodeURIComponent(k))); }
+        if (params.has('pin')) { params.get('pin').split(',').forEach(k => pinnedHeatmap.add(decodeURIComponent(k))); }
+      } catch(e) {}
+    }
+    const _origRender = render;
+    render = function() { _origRender(); saveHash(); };
+    loadHash();
+    render();
+  </script>
+</body>
+</html>
