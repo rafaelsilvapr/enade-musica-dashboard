@@ -529,6 +529,67 @@
       background: #fafbfc;
     }
     .table-note strong { color: var(--ink); }
+    .chapter-mark {
+      margin: 28px 0 14px;
+      padding: 16px 18px;
+      border-left: 5px solid var(--accent);
+      background: linear-gradient(90deg, #eef4fb, transparent);
+      border-radius: 4px;
+    }
+    .chapter-mark.exploratory {
+      border-left-color: #b8860b;
+      background: linear-gradient(90deg, #fdf6e3, transparent);
+    }
+    .chapter-mark .chapter-eyebrow {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: var(--accent);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .chapter-mark.exploratory .chapter-eyebrow {
+      color: #b8860b;
+    }
+    .chapter-mark h2 {
+      margin: 0 0 6px;
+      font-size: 20px;
+    }
+    .chapter-mark p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+      max-width: 880px;
+    }
+    .disclaimer-banner {
+      margin: 0 0 14px;
+      padding: 14px 16px;
+      background: #fdf6e3;
+      border: 1.5px solid #b8860b;
+      border-radius: 6px;
+      color: #5a4a0e;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+    .disclaimer-banner strong {
+      color: #7a5a0e;
+      display: block;
+      margin-bottom: 4px;
+      font-size: 14px;
+    }
+    .disclaimer-banner .badge {
+      display: inline-block;
+      background: #b8860b;
+      color: #fff;
+      padding: 2px 8px;
+      border-radius: 3px;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: .5px;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
     details.collapsible > summary {
       cursor: pointer;
       list-style: none;
@@ -614,6 +675,12 @@
     </div>
     <div class="note" id="filterSummary"></div>
 
+    <div class="chapter-mark">
+      <div class="chapter-eyebrow">Eixo 1 — Contexto historico</div>
+      <h2>Como o Enade de Musica chegou ate aqui</h2>
+      <p>Os ciclos de prova e os marcos legais que moldaram o instrumento de avaliacao. Use esta secao para entender o que mudou entre 2006 e 2025 antes de interpretar o desempenho das IES.</p>
+    </div>
+
     <section>
       <details class="collapsible" open>
         <summary><h2 style="margin:0;font-size:16px">Linha do tempo: provas e marcos legais</h2></summary>
@@ -658,19 +725,11 @@
       </details>
     </section>
 
-    <section>
-      <div class="section-head">
-        <h2>Perfil de saberes por ciclo (Gauthier)</h2>
-        <div class="note">Classificacao das questoes especificas de Musica segundo a tipologia de Gauthier.</div>
-      </div>
-      <div class="gauthier-wrap">
-        <div class="gauthier-chart" id="gauthierChart" role="img" aria-label="Grafico de barras empilhadas mostrando a distribuicao dos saberes de Gauthier por ano"></div>
-      </div>
-      <div class="gauthier-legend" id="gauthierLegend"></div>
-      <div class="source-note">
-        <strong>Como ler:</strong> Cada barra mostra 100% das questoes efetivas daquele ciclo. A proporcao de cada cor indica quanto da prova exige cada tipo de saber docente. Note a inversao entre 2021 (59% disciplinar) e 2024 (53% acao pedagogica).
-      </div>
-    </section>
+    <div class="chapter-mark">
+      <div class="chapter-eyebrow">Eixo 2 — Desempenho das IES</div>
+      <h2>Como cada curso se posicionou no painel nacional</h2>
+      <p>Dados oficiais do Inep: rankings, conceitos contínuos e percentuais acima do basico. Esta e a base mais consistente do dashboard — use para comparar trajetorias entre cursos com confianca.</p>
+    </div>
 
     <section>
       <div class="section-head">
@@ -741,6 +800,32 @@
         <div class="note">Mostra se as IES permaneceram no topo, migraram para baixo ou subiram de faixa.</div>
       </div>
       <div class="flow" id="flowGrid"></div>
+    </section>
+
+    <div class="chapter-mark exploratory">
+      <div class="chapter-eyebrow">Eixo 3 — Exercicio exploratorio</div>
+      <h2>Perfil de saberes docentes nas provas (Gauthier)</h2>
+      <p>O que vem a seguir e um <strong>exercicio inicial de classificacao</strong> das questoes especificas de cada prova segundo a tipologia de saberes docentes de Gauthier. Diferente dos dados acima, esta secao nao deve ser lida como evidencia fechada.</p>
+    </div>
+
+    <section>
+      <div class="disclaimer-banner">
+        <strong><span class="badge">ATENCAO</span>Leitura com ressalvas</strong>
+        Esta classificacao foi produzida com apoio de LLM e <strong>ainda nao passou pela revisao humana sistematica</strong> necessaria para garantir consistencia inter-codificadores. As categorias (disciplinar, acao pedagogica, tradicao pedagogica, ciencias da educacao, curricular) sao analiticas, nao oficiais.
+        <br><br>
+        Use as barras apenas como <em>referencia exploratoria</em> de como o peso de cada tipo de saber pode ter variado entre ciclos. Padroes aparentes — como a inversao entre 2021 e 2024 — sao hipoteses que carecem de validacao por revisao por pares.
+      </div>
+      <div class="section-head">
+        <h2>Distribuicao das questoes por tipo de saber</h2>
+        <div class="note">Classificacao exploratoria das questoes especificas de Musica.</div>
+      </div>
+      <div class="gauthier-wrap">
+        <div class="gauthier-chart" id="gauthierChart" role="img" aria-label="Grafico de barras empilhadas mostrando a distribuicao dos saberes de Gauthier por ano"></div>
+      </div>
+      <div class="gauthier-legend" id="gauthierLegend"></div>
+      <div class="source-note">
+        <strong>Como ler:</strong> Cada barra mostra 100% das questoes efetivas daquele ciclo. A proporcao de cada cor sinaliza o peso relativo de cada tipo de saber. Repetindo: esta e uma leitura exploratoria, sujeita a revisao.
+      </div>
     </section>
   </main>
   <footer>
